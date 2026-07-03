@@ -1,0 +1,8 @@
+# ADK local sessions
+session.db
+*.db
+*.sqlite
+*.sqlite3
+
+# Env/local secrets
+.env
