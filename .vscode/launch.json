@@ -17,6 +17,7 @@
             "cwd": "${workspaceFolder}",
             "console": "integratedTerminal",
             "python": "${command:python.interpreterPath}",
+            "envFile": "${workspaceFolder}/.env.gemini",
             "justMyCode": false
         },
         {
@@ -35,11 +36,8 @@
             "cwd": "${workspaceFolder}",
             "console": "integratedTerminal",
             "python": "${command:python.interpreterPath}",
-            "justMyCode": false,
-            "env": {
-                "MODEL_PROVIDER": "local",
-                "GOOGLE_API_KEY": "dummy"
-            }
+            "envFile": "${workspaceFolder}/.env.ollama",
+            "justMyCode": false
         }
     ]
 }
