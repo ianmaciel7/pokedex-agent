@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "ADK Web",
+            "name": "ADK Web (Gemini)",
             "type": "debugpy",
             "request": "launch",
             "program": "${workspaceFolder}/.venv/bin/adk",
@@ -18,6 +18,28 @@
             "console": "integratedTerminal",
             "python": "${command:python.interpreterPath}",
             "justMyCode": false
+        },
+        {
+            "name": "ADK Web (Ollama)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/.venv/bin/adk",
+            "args": [
+                "web",
+                "--port",
+                "8000",
+                "--reload",
+                "--reload_agents",
+                "."
+            ],
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "python": "${command:python.interpreterPath}",
+            "justMyCode": false,
+            "env": {
+                "MODEL_PROVIDER": "local",
+                "GOOGLE_API_KEY": "dummy"
+            }
         }
     ]
 }

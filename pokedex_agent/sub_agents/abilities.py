@@ -1,10 +1,11 @@
+from pokedex_agent.model_config import get_model
 """Sub-agent for Pokémon abilities and types."""
 
 from google.adk.agents.llm_agent import Agent
 from pokedex_agent.tools.abilities import ability_tools
 
 ability_agent = Agent(
-    model="gemini-2.0-flash",
+    model=get_model(),
     name="ability_agent",
     description=(
         "Handles queries about Pokémon abilities and types: ability descriptions and effects, "

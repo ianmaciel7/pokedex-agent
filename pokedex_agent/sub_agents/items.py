@@ -1,10 +1,11 @@
+from pokedex_agent.model_config import get_model
 """Sub-agent for items and berries."""
 
 from google.adk.agents.llm_agent import Agent
 from pokedex_agent.tools.items import item_tools
 
 item_agent = Agent(
-    model="gemini-2.0-flash",
+    model=get_model(),
     name="item_agent",
     description=(
         "Handles queries about items and berries: item descriptions and effects, item categories "

@@ -1,10 +1,11 @@
+from pokedex_agent.model_config import get_model
 """Sub-agent for game meta-data: versions, contests, languages, and evolution."""
 
 from google.adk.agents.llm_agent import Agent
 from pokedex_agent.tools.meta import meta_tools
 
 meta_agent = Agent(
-    model="gemini-2.0-flash",
+    model=get_model(),
     name="meta_agent",
     description=(
         "Handles queries about game meta-data: game versions and version groups, "

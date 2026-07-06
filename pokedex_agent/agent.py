@@ -1,10 +1,11 @@
 """Root orchestrator agent — delegates to specialized sub-agents by context."""
 
+from pokedex_agent.model_config import get_model
 from google.adk.agents.llm_agent import Agent
 from pokedex_agent.sub_agents import all_sub_agents
 
 root_agent = Agent(
-    model="gemini-2.0-flash",
+    model=get_model(),
     name="root_agent",
     description="An orchestrator that answers any question about Pokémon by routing to the right specialist.",
     instruction=(

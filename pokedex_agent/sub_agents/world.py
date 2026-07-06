@@ -1,10 +1,11 @@
+from pokedex_agent.model_config import get_model
 """Sub-agent for locations, encounters, and regions."""
 
 from google.adk.agents.llm_agent import Agent
 from pokedex_agent.tools.world import world_tools
 
 world_agent = Agent(
-    model="gemini-2.0-flash",
+    model=get_model(),
     name="world_agent",
     description=(
         "Handles queries about the Pokémon world: locations and their sub-areas, "

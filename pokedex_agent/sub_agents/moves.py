@@ -1,10 +1,11 @@
+from pokedex_agent.model_config import get_model
 """Sub-agent for Pokémon moves and battle mechanics."""
 
 from google.adk.agents.llm_agent import Agent
 from pokedex_agent.tools.moves import move_tools
 
 move_agent = Agent(
-    model="gemini-2.0-flash",
+    model=get_model(),
     name="move_agent",
     description=(
         "Handles queries about Pokémon moves and battle mechanics: move stats (power, accuracy, PP, type), "
