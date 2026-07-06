@@ -41,7 +41,10 @@ def _google_model_name():
             "Set GOOGLE_API_KEY or GEMINI_API_KEY."
         )
 
-    if api_key.startswith("REPLACE_WITH_") or api_key == "your-google-ai-studio-api-key":
+    if (
+        api_key.startswith("REPLACE_WITH_")
+        or api_key == "your-google-ai-studio-api-key"
+    ):
         return _configuration_error(
             "Replace the placeholder API key in the selected environment file "
             "with a real Gemini API key from Google AI Studio. Editing "

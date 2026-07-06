@@ -10,7 +10,9 @@ from pokedex_agent.tools.pokemon import pokemon_tools
 from pokedex_agent.tools.world import world_tools
 
 
-def create_sub_agent(name: str, description: str, instruction: str, tools: list) -> Agent:
+def create_sub_agent(
+    name: str, description: str, instruction: str, tools: list
+) -> Agent:
     return Agent(
         model=get_model(),
         name=name,

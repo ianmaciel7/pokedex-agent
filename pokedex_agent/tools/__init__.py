@@ -8,12 +8,7 @@ from .world import world_tools
 from .meta import meta_tools
 
 all_tools = (
-    pokemon_tools
-    + move_tools
-    + ability_tools
-    + item_tools
-    + world_tools
-    + meta_tools
+    pokemon_tools + move_tools + ability_tools + item_tools + world_tools + meta_tools
 )
 
 __all__ = [
