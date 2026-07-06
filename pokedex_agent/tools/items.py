@@ -3,6 +3,33 @@
 import pokebase as pb
 
 
+def _normalize_sprite_name(name: str) -> str:
+    return name.strip().lower().replace(" ", "-").replace("_", "-")
+
+
+def get_item_image_url(item_name: str) -> str:
+    """Get the item sprite image URL for an item or berry.
+
+    Args:
+        item_name: The item name or berry name (e.g. 'potion', 'poke-ball', or 'cheri').
+    """
+    normalized_name = _normalize_sprite_name(item_name)
+    if not normalized_name.endswith("-berry") and "berry" not in normalized_name:
+        berry_name = f"{normalized_name}-berry"
+    else:
+        berry_name = normalized_name
+
+    item_url = (
+        "https://raw.githubusercontent.com/PokeAPI/sprites/master/"
+        f"sprites/items/{normalized_name}.png"
+    )
+    berry_url = (
+        "https://raw.githubusercontent.com/PokeAPI/sprites/master/"
+        f"sprites/items/{berry_name}.png"
+    )
+    return f"Item sprite: {item_url}\nBerry sprite, when this is a berry: {berry_url}"
+
+
 def get_item(item_name: str) -> str:
     """Get information about an in-game item (effect, cost, held effects).
 
@@ -76,6 +103,7 @@ def get_berry_flavor(berry_flavor_name: str) -> str:
 
 
 item_tools = [
+    get_item_image_url,
     get_item,
     get_item_attribute,
     get_item_category,

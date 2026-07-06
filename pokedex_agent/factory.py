@@ -9,6 +9,14 @@ from pokedex_agent.tools.moves import move_tools
 from pokedex_agent.tools.pokemon import pokemon_tools
 from pokedex_agent.tools.world import world_tools
 
+IMAGE_RESPONSE_INSTRUCTION = (
+    "When returning information about a specific Pokémon, item, berry, or other "
+    "entity with an available visual equivalent, include one relevant image near "
+    "the top of the answer using Markdown image syntax. Use tool-provided image "
+    "URLs when available. Do not invent image URLs; if no relevant image is "
+    "available, continue without one."
+)
+
 
 def create_sub_agent(
     name: str, description: str, instruction: str, tools: list
@@ -17,7 +25,7 @@ def create_sub_agent(
         model=get_model(),
         name=name,
         description=description,
-        instruction=instruction,
+        instruction=f"{instruction} {IMAGE_RESPONSE_INSTRUCTION}",
         tools=tools,
     )
 
@@ -27,7 +35,7 @@ def _build_agent(name: str, description: str, instruction: str) -> Agent:
         model=get_model(),
         name=name,
         description=description,
-        instruction=instruction,
+        instruction=f"{instruction} {IMAGE_RESPONSE_INSTRUCTION}",
         sub_agents=create_all_sub_agents(),
     )
 

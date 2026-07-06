@@ -3,6 +3,20 @@
 import pokebase as pb
 
 
+def get_pokemon_image_url(pokemon_name: str) -> str:
+    """Get the official artwork image URL for a Pokémon.
+
+    Args:
+        pokemon_name: The name or Pokédex ID of the Pokémon (e.g. 'pikachu' or '25').
+    """
+    pokemon = pb.pokemon(pokemon_name)
+    pokemon_id = pokemon.id
+    return (
+        "https://raw.githubusercontent.com/PokeAPI/sprites/master/"
+        f"sprites/pokemon/other/official-artwork/{pokemon_id}.png"
+    )
+
+
 def get_pokemon(pokemon_name: str) -> str:
     """Get base information about a Pokémon (stats, types, abilities, moves).
 
@@ -139,6 +153,7 @@ def get_pokedex(pokedex_name: str) -> str:
 
 
 pokemon_tools = [
+    get_pokemon_image_url,
     get_pokemon,
     get_pokemon_species,
     get_pokemon_color,

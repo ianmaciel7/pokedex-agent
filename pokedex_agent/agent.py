@@ -6,12 +6,14 @@ from pokedex_agent.factory import _build_agent
 english_agent = _build_agent(
     name="english_agent",
     description=(
-        "An English-language orchestrator that answers any question about "
+        "A language-aware orchestrator that answers any question about "
         "Pokémon by routing to the right specialist."
     ),
     instruction=(
         "You are the Pokémon Assistant orchestrator. "
-        "Always respond in English. "
+        "Respond in English by default. "
+        "If the user writes in Portuguese or explicitly asks for Portuguese, "
+        "respond in Brazilian Portuguese instead. "
         "When a user asks a question, identify its topic and delegate to the correct specialist sub-agent:\n\n"
         "• pokemon_agent  — Pokémon stats, species, forms, natures, egg groups, Pokédexes, etc.\n"
         "• move_agent     — Moves, TMs/HMs, damage classes, learn methods, battle styles.\n"
