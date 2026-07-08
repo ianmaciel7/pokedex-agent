@@ -1,10 +1,25 @@
 # pokedex-agent
 
-A hands-on Pokédex-style AI agent built with Google ADK and PokéAPI.
+A hands-on Pokédex-style AI agent built with Google ADK and
+[PokéAPI](https://pokeapi.co/).
 
 I created this project to learn how Google ADK works in practice: how to define
 agents, connect tools, split responsibilities across specialist sub-agents, run
 the project locally, and handle real API data inside an agent workflow.
+
+## What it does
+
+`pokedex-agent` answers Pokémon questions by routing each request to a specialist
+ADK sub-agent. The specialists call domain tools backed by
+[PokéAPI](https://pokeapi.co/) data through `pokebase`, then return a formatted
+answer with images when available.
+
+## Why it is useful
+
+This is a small learning project for practicing real ADK patterns without a
+large application around them. It demonstrates orchestration, sub-agent
+delegation, tool calling, model configuration, and ADK plugin callbacks in one
+focused codebase.
 
 ## ADK topics used
 
@@ -13,6 +28,7 @@ This repository is both a working agent and a study project. The ADK topics used
 - [x] Root agent entry point with `root_agent`.
 - [x] ADK `App` wiring.
 - [x] Orchestrator agents.
+- [x] Multilingual/i18n agent behavior with English and Brazilian Portuguese.
 - [x] Specialist sub-agents.
 - [x] Sub-agent delegation.
 - [x] Function tools for PokéAPI data.
@@ -25,16 +41,64 @@ This repository is both a working agent and a study project. The ADK topics used
 
 - Python 3.12+
 - `uv`
-- A Gemini API key for ADK model calls
+- One configured model provider: Gemini, NVIDIA NIM, or local Ollama/LiteLLM
 
-## Language agents
+## Quick start
+
+Install dependencies from the project root:
+
+```sh
+uv sync
+```
+
+Create a local environment file:
+
+```sh
+cp .env.example .env
+```
+
+Run the ADK web UI:
+
+```sh
+uv run adk web pokedex_agent
+```
+
+Or run one prompt from the CLI:
+
+```sh
+uv run adk run pokedex_agent "Tell me about Pikachu"
+```
+
+## Configuration
+
+Set `MODEL_PROVIDER` to one of:
+
+- `google`: Gemini API through `GOOGLE_API_KEY` or `GEMINI_API_KEY`.
+- `nvidia`: NVIDIA NIM through `NVIDIA_NIM_API_KEY`.
+- `local`: local LiteLLM/Ollama model through `LOCAL_MODEL`.
+
+Example NVIDIA NIM config:
+
+```env
+MODEL_PROVIDER=nvidia
+NVIDIA_NIM_API_KEY=REPLACE_WITH_YOUR_NVIDIA_NIM_API_KEY
+NVIDIA_MODEL=nvidia_nim/deepseek-ai/deepseek-v4-flash
+```
+
+Do not paste real API keys into chat or commit them to git. Local `.env` files
+are ignored by git.
+
+## Usage
 
 The package exposes two orchestrator agents:
 
-- `english_agent` answers in English.
-- `pt_br_agent` answers in Brazilian Portuguese.
+- `english_agent`: answers in English by default.
+- `pt_br_agent`: answers in Brazilian Portuguese.
 
-`root_agent` remains available as the default ADK entry point and points to `english_agent`.
+The default `root_agent` points to `english_agent`, which can respond in
+Brazilian Portuguese when the user writes in Portuguese or explicitly asks for
+Portuguese. `pt_br_agent` is available when a dedicated Portuguese entry point
+is preferred.
 
 ## Project structure
 
@@ -44,8 +108,9 @@ That directory contains `agent.py`, which exports the default `root_agent`.
 - `pokedex_agent/agent.py` wires the orchestrator agents and ADK app.
 - `pokedex_agent/factory.py` contains shared agent factory helpers.
 - `pokedex_agent/sub_agents/` contains specialist sub-agents.
-- `pokedex_agent/tools/` contains PokéAPI tool wrappers grouped by domain.
-- `AGENTS.md` contains coding-agent instructions, project conventions, and checks.
+- `pokedex_agent/tools/` contains [PokéAPI](https://pokeapi.co/) tool wrappers
+  grouped by domain.
+- [AGENTS.md](AGENTS.md) contains coding-agent instructions, project conventions, and checks.
 
 ## Agent flow
 
@@ -86,54 +151,14 @@ flowchart TD
     plugin --> answer
 ```
 
-## Setup
-
-Install dependencies from the project root:
-
-```sh
-uv sync
-```
-
-Copy the example environment file and add your API key:
-
-```sh
-cp .env.example .env
-```
-
-Use `MODEL_PROVIDER=google` for Gemini API calls, `MODEL_PROVIDER=nvidia` for
-NVIDIA NIM, or `MODEL_PROVIDER=local` for a local LiteLLM/Ollama model.
-
-The SDK accepts `GOOGLE_API_KEY` or `GEMINI_API_KEY`. If both are set,
-`GOOGLE_API_KEY` takes precedence.
-
-For NVIDIA NIM, use `.env.nvidia`:
-
-```env
-MODEL_PROVIDER=nvidia
-NVIDIA_NIM_API_KEY=REPLACE_WITH_YOUR_NVIDIA_NIM_API_KEY
-NVIDIA_MODEL=nvidia_nim/deepseek-ai/deepseek-v4-flash
-```
-
-Do not paste real API keys into chat or commit them to git. Fill the key locally
-in `.env.nvidia`, which is ignored by git.
+## Troubleshooting
 
 If ADK returns `_ResourceExhaustedError`, the selected model has exhausted its
 quota or rate limit. Wait and retry, switch to `MODEL_PROVIDER=local`, or use a
-Gemini API key/project with available quota.
+provider key/project with available quota.
 
-## Run with ADK
-
-Run the ADK web UI from the project root:
-
-```sh
-uv run adk web pokedex_agent
-```
-
-For a one-shot CLI run:
-
-```sh
-uv run adk run pokedex_agent "Tell me about Pikachu"
-```
+If ADK returns `AuthenticationError`, check that the selected env file contains
+the correct API key for the active `MODEL_PROVIDER`, then restart ADK Web.
 
 ## Development checks
 
@@ -154,3 +179,8 @@ After changing agent wiring, imports, exports, or factories, run:
 ```sh
 uv run python -c "import pokedex_agent.agent; from pokedex_agent.sub_agents import create_all_sub_agents; print(len(create_all_sub_agents()))"
 ```
+
+## Help
+
+This is a personal learning project. Start with [AGENTS.md](AGENTS.md) for
+project conventions before changing agent prompts, tools, or wiring.
