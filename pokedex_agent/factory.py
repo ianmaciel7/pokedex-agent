@@ -1,8 +1,14 @@
 """Shared helpers for building root and specialist agents."""
 
+from collections.abc import Callable
+
 from google.adk.agents.llm_agent import Agent
+from google.adk.tools.base_tool import BaseTool
+from google.adk.tools.base_toolset import BaseToolset
 
 from pokedex_agent.model_config import get_model
+
+type AgentTool = Callable[..., str] | BaseTool | BaseToolset
 
 IMAGE_RESPONSE_INSTRUCTION = (
     "When returning information about a specific Pokémon, item, berry, or other "
@@ -14,7 +20,7 @@ IMAGE_RESPONSE_INSTRUCTION = (
 
 
 def create_sub_agent(
-    name: str, description: str, instruction: str, tools: list
+    name: str, description: str, instruction: str, tools: list[AgentTool]
 ) -> Agent:
     return Agent(
         model=get_model(),

@@ -14,6 +14,7 @@ select = [
   "E",
   "F",
   "B",
+  "TID251",
 ]
 ignore = [
   "E501",
@@ -23,3 +24,7 @@ ignore = [
 quote-style = "double"
 indent-style = "space"
 line-ending = "lf"
+
+[lint.flake8-tidy-imports.banned-api]
+"builtins.object".msg = "Use a specific type instead of object."
+"typing.Any".msg = "Use a specific type instead of Any."

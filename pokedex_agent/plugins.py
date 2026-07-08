@@ -1,7 +1,6 @@
 """Application-wide ADK plugins."""
 
 import logging
-from typing import Any
 
 from google.adk.agents.callback_context import CallbackContext
 from google.adk.models.llm_request import LlmRequest
@@ -10,6 +9,7 @@ from google.adk.plugins.base_plugin import BasePlugin
 from google.adk.tools.base_tool import BaseTool
 from google.adk.tools.tool_context import ToolContext
 from google.genai import types
+from pydantic import JsonValue
 
 logger = logging.getLogger(__name__)
 
@@ -106,10 +106,10 @@ class GlobalErrorPlugin(BasePlugin):
         self,
         *,
         tool: BaseTool,
-        tool_args: dict[str, Any],
+        tool_args: dict[str, JsonValue],
         tool_context: ToolContext,
         error: Exception,
-    ) -> dict[str, Any]:
+    ) -> dict[str, JsonValue]:
         logger.exception(
             "Tool error in agent %s while running %s with args %s",
             tool_context.agent_name,

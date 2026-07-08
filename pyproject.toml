@@ -8,6 +8,7 @@ dependencies = [
     "google-adk>=2.3.0",
     "litellm>=1.90.3",
     "pokebase>=1.4.1",
+    "pydantic>=2.13.4",
 ]
 
 [dependency-groups]

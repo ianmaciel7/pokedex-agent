@@ -1156,6 +1156,7 @@ dependencies = [
     { name = "google-adk" },
     { name = "litellm" },
     { name = "pokebase" },
+    { name = "pydantic" },
 ]
 
 [package.dev-dependencies]
@@ -1168,6 +1169,7 @@ requires-dist = [
     { name = "google-adk", specifier = ">=2.3.0" },
     { name = "litellm", specifier = ">=1.90.3" },
     { name = "pokebase", specifier = ">=1.4.1" },
+    { name = "pydantic", specifier = ">=2.13.4" },
 ]
 
 [package.metadata.requires-dev]
