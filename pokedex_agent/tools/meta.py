@@ -1,4 +1,4 @@
-"""Tools for game meta-data: versions, contests, languages, and evolution."""
+"""Tools for game metadata: versions, contests, languages, and evolution."""
 
 import pokebase as pb
 

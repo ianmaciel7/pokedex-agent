@@ -2,11 +2,12 @@
 
 from google.adk.apps.app import App
 
-from pokedex_agent.factory import _build_agent
+from pokedex_agent.factory import create_root_agent
 from pokedex_agent.plugins import GlobalErrorPlugin
+from pokedex_agent.sub_agents import create_all_sub_agents
 
 
-english_agent = _build_agent(
+english_agent = create_root_agent(
     name="english_agent",
     description=(
         "A language-aware orchestrator that answers any question about "
@@ -28,9 +29,10 @@ english_agent = _build_agent(
         "If a question spans multiple topics, call the most relevant sub-agent first, "
         "then follow up with additional sub-agents if needed."
     ),
+    sub_agents=create_all_sub_agents(),
 )
 
-pt_br_agent = _build_agent(
+pt_br_agent = create_root_agent(
     name="pt_br_agent",
     description=(
         "Um orquestrador em português brasileiro que responde perguntas sobre "
@@ -50,6 +52,7 @@ pt_br_agent = _build_agent(
         "Se uma pergunta cobrir vários tópicos, chame primeiro o subagente mais relevante "
         "e depois consulte subagentes adicionais se necessário."
     ),
+    sub_agents=create_all_sub_agents(),
 )
 
 # ADK Web uses root_agent as the default entry point for this package.

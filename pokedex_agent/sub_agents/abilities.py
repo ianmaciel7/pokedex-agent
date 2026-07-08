@@ -1,6 +1,27 @@
 """Sub-agent for Pokémon abilities and types."""
 
-from pokedex_agent.factory import create_ability_agent
+from google.adk.agents.llm_agent import Agent
+
+from pokedex_agent.factory import create_sub_agent
+from pokedex_agent.tools.abilities import ability_tools
+
+
+def create_ability_agent() -> Agent:
+    return create_sub_agent(
+        name="ability_agent",
+        description=(
+            "Handles queries about Pokémon abilities and types: ability descriptions and effects, "
+            "which Pokémon have a given ability, type damage relations (strengths, weaknesses, immunities), "
+            "and Pokémon belonging to a type."
+        ),
+        instruction=(
+            "You are a Pokémon abilities and types specialist. "
+            "Use the available tools to look up accurate data about abilities and types, "
+            "and return clear, well-formatted answers. "
+            "Always use the tool — never guess ability or type data from memory."
+        ),
+        tools=ability_tools,
+    )
 
 
 ability_agent = create_ability_agent()

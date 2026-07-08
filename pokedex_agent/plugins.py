@@ -14,6 +14,12 @@ from google.genai import types
 logger = logging.getLogger(__name__)
 
 
+def _is_resource_exhausted_error(error: Exception) -> bool:
+    error_name = type(error).__name__.lower()
+    error_text = str(error).lower()
+    return "resourceexhausted" in error_name or "resource exhausted" in error_text
+
+
 class GlobalErrorPlugin(BasePlugin):
     """Provide graceful fallback responses for unhandled model and tool errors."""
 
@@ -32,20 +38,28 @@ class GlobalErrorPlugin(BasePlugin):
             callback_context.agent_name,
             exc_info=error,
         )
+        if _is_resource_exhausted_error(error):
+            text = (
+                "The selected model quota or rate limit was exhausted while "
+                "handling that request. Wait a moment and retry, switch to the "
+                "local model profile, or use a Gemini API key/project with "
+                "available quota."
+            )
+            error_message = "Model quota or rate limit exhausted."
+        else:
+            text = (
+                "I hit an internal model error while handling that request. "
+                "Please try again in a moment."
+            )
+            error_message = "Unhandled model error handled by GlobalErrorPlugin."
+
         return LlmResponse(
             content=types.Content(
                 role="model",
-                parts=[
-                    types.Part.from_text(
-                        text=(
-                            "I hit an internal model error while handling that "
-                            "request. Please try again in a moment."
-                        )
-                    )
-                ],
+                parts=[types.Part.from_text(text=text)],
             ),
             error_code=type(error).__name__,
-            error_message="Unhandled model error handled by GlobalErrorPlugin.",
+            error_message=error_message,
         )
 
     async def on_tool_error_callback(
@@ -67,7 +81,7 @@ class GlobalErrorPlugin(BasePlugin):
             "ok": False,
             "error": type(error).__name__,
             "message": (
-                f"The tool '{tool.name}' failed while fetching Pokemon data. "
+                f"The tool '{tool.name}' failed while fetching Pokémon data. "
                 "Ask the user to retry or provide a more specific identifier."
             ),
         }
