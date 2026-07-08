@@ -6,29 +6,20 @@ I created this project to learn how Google ADK works in practice: how to define
 agents, connect tools, split responsibilities across specialist sub-agents, run
 the project locally, and handle real API data inside an agent workflow.
 
-## Learning goals
+## ADK topics used
 
-This repository is both a working agent and a study project. The main topics
-covered are:
+This repository is both a working agent and a study project. The ADK topics used are:
 
-- [x] Create a Google ADK agent package with a default `root_agent`.
-- [x] Configure model selection through environment variables.
-- [x] Build an ADK `App` around the root agent.
-- [x] Create a language-aware orchestrator agent.
-- [x] Add a Brazilian Portuguese agent variant.
-- [x] Split the assistant into specialist sub-agents.
-- [x] Use sub-agent delegation for different Pokémon knowledge domains.
-- [x] Create reusable agent factory helpers.
-- [x] Wrap external API calls as agent tools.
-- [x] Organize tools by domain: Pokémon, moves, abilities, items, world, and metadata.
-- [x] Use PokéAPI data through `pokebase`.
-- [x] Add image URL support for Pokémon and item responses.
-- [x] Add global error handling with an ADK plugin.
-- [x] Run the agent through ADK Web.
-- [x] Run one-shot questions through the ADK CLI.
-- [x] Manage dependencies with `uv`.
-- [x] Lint and format code with Ruff.
-- [x] Document project conventions for future coding agents in `AGENTS.md`.
+- [x] Root agent entry point with `root_agent`.
+- [x] ADK `App` wiring.
+- [x] Orchestrator agents.
+- [x] Specialist sub-agents.
+- [x] Sub-agent delegation.
+- [x] Function tools for PokéAPI data.
+- [x] Shared model configuration.
+- [x] ADK plugin callbacks for model and tool errors.
+- [x] ADK Web.
+- [x] ADK CLI runs.
 
 ## Requirements
 
@@ -58,6 +49,9 @@ That directory contains `agent.py`, which exports the default `root_agent`.
 
 ## Agent flow
 
+The orchestrator receives the user question, selects the best specialist
+sub-agent, and that sub-agent calls the PokéAPI through its domain tools.
+
 ```mermaid
 flowchart TD
     user[User question] --> entry[ADK entry point<br/>root_agent]
@@ -65,17 +59,17 @@ flowchart TD
     app --> english[english_agent<br/>default orchestrator]
     app -. optional .-> portuguese[pt_br_agent<br/>Brazilian Portuguese orchestrator]
 
-    english --> route{Identify topic}
+    english --> route{Orchestrator<br/>identifies topic}
     portuguese --> route
 
-    route --> pokemon[pokemon_agent<br/>stats, species, forms]
-    route --> moves[move_agent<br/>moves and battle mechanics]
-    route --> abilities[ability_agent<br/>abilities and type matchups]
-    route --> items[item_agent<br/>items and berries]
-    route --> world[world_agent<br/>locations and encounters]
-    route --> meta[meta_agent<br/>versions, evolution, contests]
+    route --> pokemon[Delegate to pokemon_agent<br/>stats, species, forms]
+    route --> moves[Delegate to move_agent<br/>moves and battle mechanics]
+    route --> abilities[Delegate to ability_agent<br/>abilities and type matchups]
+    route --> items[Delegate to item_agent<br/>items and berries]
+    route --> world[Delegate to world_agent<br/>locations and encounters]
+    route --> meta[Delegate to meta_agent<br/>versions, evolution, contests]
 
-    pokemon --> tools[Domain tools]
+    pokemon --> tools[Sub-agent calls<br/>domain tools]
     moves --> tools
     abilities --> tools
     items --> tools
@@ -83,7 +77,7 @@ flowchart TD
     meta --> tools
 
     tools --> pokebase[pokebase]
-    pokebase --> pokeapi[PokéAPI]
+    pokebase --> pokeapi[PokéAPI call]
     pokeapi --> tools
     tools --> answer[Formatted answer<br/>data plus image when available]
     answer --> user
