@@ -12,7 +12,7 @@
                 "8000",
                 "--reload",
                 "--reload_agents",
-                "."
+                "pokedex_agent"
             ],
             "cwd": "${workspaceFolder}",
             "console": "integratedTerminal",
@@ -31,7 +31,7 @@
                 "8000",
                 "--reload",
                 "--reload_agents",
-                "."
+                "pokedex_agent"
             ],
             "cwd": "${workspaceFolder}",
             "console": "integratedTerminal",
