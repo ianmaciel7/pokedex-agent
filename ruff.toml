@@ -1,5 +1,13 @@
 target-version = "py312"
 line-length = 88
+extend-exclude = [
+  ".adk",
+  ".agents",
+  ".codex",
+  ".ruff_cache",
+  ".venv",
+  "__pycache__",
+]
 
 [lint]
 select = [
