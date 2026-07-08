@@ -26,6 +26,17 @@ def _is_authentication_error(error: Exception) -> bool:
     return "authentication" in error_name or "unauthorized" in error_text
 
 
+def _is_mid_stream_error(error: Exception) -> bool:
+    error_name = type(error).__name__.lower()
+    error_text = str(error).lower()
+    return "midstream" in error_name or "mid-stream" in error_text
+
+
+def _is_unsupported_params_error(error: Exception) -> bool:
+    error_name = type(error).__name__.lower()
+    return "unsupportedparams" in error_name
+
+
 class GlobalErrorPlugin(BasePlugin):
     """Provide graceful fallback responses for unhandled model and tool errors."""
 
@@ -60,6 +71,21 @@ class GlobalErrorPlugin(BasePlugin):
                 "NVIDIA_NIM_API_KEY with a key that starts with 'nvapi-'."
             )
             error_message = "Model authentication failed."
+        elif _is_mid_stream_error(error):
+            text = (
+                "The selected model failed while streaming the response. "
+                "Retry the request. If this happens with NVIDIA NIM, set "
+                "NVIDIA_REASONING_EFFORT=none in the active environment file "
+                "and restart ADK Web."
+            )
+            error_message = "Model failed during streaming."
+        elif _is_unsupported_params_error(error):
+            text = (
+                "The selected model provider rejected one of the configured "
+                "model parameters. Check provider-specific settings in the "
+                "active environment file and restart ADK Web."
+            )
+            error_message = "Model provider rejected configured parameters."
         else:
             text = (
                 "I hit an internal model error while handling that request. "

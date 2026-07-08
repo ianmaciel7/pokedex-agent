@@ -83,6 +83,7 @@ Example NVIDIA NIM config:
 MODEL_PROVIDER=nvidia
 NVIDIA_NIM_API_KEY=REPLACE_WITH_YOUR_NVIDIA_NIM_API_KEY
 NVIDIA_MODEL=nvidia_nim/deepseek-ai/deepseek-v4-flash
+NVIDIA_REASONING_EFFORT=none
 ```
 
 Do not paste real API keys into chat or commit them to git. Local `.env` files
@@ -159,6 +160,9 @@ provider key/project with available quota.
 
 If ADK returns `AuthenticationError`, check that the selected env file contains
 the correct API key for the active `MODEL_PROVIDER`, then restart ADK Web.
+
+If ADK returns `MidStreamFallbackError` with NVIDIA NIM, keep
+`NVIDIA_REASONING_EFFORT=none` in the selected env file and restart ADK Web.
 
 ## Development checks
 

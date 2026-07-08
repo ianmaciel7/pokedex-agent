@@ -75,7 +75,11 @@ def _nvidia_model() -> BaseLlm:
         "NVIDIA_MODEL",
         "nvidia_nim/deepseek-ai/deepseek-v4-flash",
     )
-    return LiteLlm(model=model)
+    reasoning_effort = os.getenv("NVIDIA_REASONING_EFFORT", "none")
+    return LiteLlm(
+        model=model,
+        extra_body={"reasoning_effort": reasoning_effort},
+    )
 
 
 def get_model():
