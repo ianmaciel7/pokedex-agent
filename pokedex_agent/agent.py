@@ -1,6 +1,9 @@
 """Root orchestrator agents — delegate to specialized sub-agents by context."""
 
+from google.adk.apps.app import App
+
 from pokedex_agent.factory import _build_agent
+from pokedex_agent.plugins import GlobalErrorPlugin
 
 
 english_agent = _build_agent(
@@ -52,4 +55,10 @@ pt_br_agent = _build_agent(
 # ADK Web uses root_agent as the default entry point for this package.
 root_agent = english_agent
 
-__all__ = ["english_agent", "pt_br_agent", "root_agent"]
+app = App(
+    name="pokedex_agent",
+    root_agent=root_agent,
+    plugins=[GlobalErrorPlugin()],
+)
+
+__all__ = ["app", "english_agent", "pt_br_agent", "root_agent"]
