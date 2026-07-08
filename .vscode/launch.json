@@ -38,6 +38,25 @@
             "python": "${command:python.interpreterPath}",
             "envFile": "${workspaceFolder}/.env.ollama",
             "justMyCode": false
+        },
+        {
+            "name": "ADK Web (NVIDIA)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/.venv/bin/adk",
+            "args": [
+                "web",
+                "--port",
+                "8000",
+                "--reload",
+                "--reload_agents",
+                "pokedex_agent"
+            ],
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "python": "${command:python.interpreterPath}",
+            "envFile": "${workspaceFolder}/.env.nvidia",
+            "justMyCode": false
         }
     ]
 }

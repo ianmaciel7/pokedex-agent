@@ -106,11 +106,22 @@ Copy the example environment file and add your API key:
 cp .env.example .env
 ```
 
-Use `MODEL_PROVIDER=google` for Gemini API calls or `MODEL_PROVIDER=local`
-for a local LiteLLM/Ollama model.
+Use `MODEL_PROVIDER=google` for Gemini API calls, `MODEL_PROVIDER=nvidia` for
+NVIDIA NIM, or `MODEL_PROVIDER=local` for a local LiteLLM/Ollama model.
 
 The SDK accepts `GOOGLE_API_KEY` or `GEMINI_API_KEY`. If both are set,
 `GOOGLE_API_KEY` takes precedence.
+
+For NVIDIA NIM, use `.env.nvidia`:
+
+```env
+MODEL_PROVIDER=nvidia
+NVIDIA_NIM_API_KEY=REPLACE_WITH_YOUR_NVIDIA_NIM_API_KEY
+NVIDIA_MODEL=nvidia_nim/deepseek-ai/deepseek-v4-flash
+```
+
+Do not paste real API keys into chat or commit them to git. Fill the key locally
+in `.env.nvidia`, which is ignored by git.
 
 If ADK returns `_ResourceExhaustedError`, the selected model has exhausted its
 quota or rate limit. Wait and retry, switch to `MODEL_PROVIDER=local`, or use a

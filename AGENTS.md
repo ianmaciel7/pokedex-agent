@@ -24,6 +24,7 @@ The agent uses PokéAPI through `pokebase` and exposes:
 - Copy `.env.example` to `.env` for local runs.
 - Use `GOOGLE_API_KEY` or `GEMINI_API_KEY` for Gemini access.
 - `GOOGLE_API_KEY` takes precedence when both API key variables are present.
+- Use `NVIDIA_NIM_API_KEY` with `MODEL_PROVIDER=nvidia` for NVIDIA NIM access.
 - Do not commit real API keys, tokens, credentials, generated caches, or local `.env` files.
 
 ## Code Style

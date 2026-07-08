@@ -20,6 +20,12 @@ def _is_resource_exhausted_error(error: Exception) -> bool:
     return "resourceexhausted" in error_name or "resource exhausted" in error_text
 
 
+def _is_authentication_error(error: Exception) -> bool:
+    error_name = type(error).__name__.lower()
+    error_text = str(error).lower()
+    return "authentication" in error_name or "unauthorized" in error_text
+
+
 class GlobalErrorPlugin(BasePlugin):
     """Provide graceful fallback responses for unhandled model and tool errors."""
 
@@ -46,6 +52,14 @@ class GlobalErrorPlugin(BasePlugin):
                 "available quota."
             )
             error_message = "Model quota or rate limit exhausted."
+        elif _is_authentication_error(error):
+            text = (
+                "The selected model rejected the API credentials. Check that "
+                "the active environment file contains a valid API key for the "
+                "selected provider, then restart ADK Web. For NVIDIA NIM, use "
+                "NVIDIA_NIM_API_KEY with a key that starts with 'nvapi-'."
+            )
+            error_message = "Model authentication failed."
         else:
             text = (
                 "I hit an internal model error while handling that request. "

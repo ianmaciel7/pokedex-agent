@@ -61,6 +61,23 @@ def _google_model_name():
     return os.getenv("GOOGLE_MODEL", "gemini-flash-latest")
 
 
+def _nvidia_model() -> BaseLlm:
+    api_key = os.getenv("NVIDIA_NIM_API_KEY") or os.getenv("NVIDIA_API_KEY")
+
+    if not api_key or api_key.startswith("REPLACE_WITH_"):
+        return _configuration_error(
+            "MODEL_PROVIDER=nvidia requires a valid NVIDIA NIM API key in the "
+            "selected environment file. Set NVIDIA_NIM_API_KEY."
+        )
+
+    os.environ["NVIDIA_NIM_API_KEY"] = api_key
+    model = os.getenv(
+        "NVIDIA_MODEL",
+        "nvidia_nim/deepseek-ai/deepseek-v4-flash",
+    )
+    return LiteLlm(model=model)
+
+
 def get_model():
     provider = os.getenv("MODEL_PROVIDER", "local").lower()
 
@@ -74,4 +91,9 @@ def get_model():
     if provider == "google":
         return _google_model_name()
 
-    return _configuration_error("MODEL_PROVIDER must be 'local' or 'google'.")
+    if provider == "nvidia":
+        return _nvidia_model()
+
+    return _configuration_error(
+        "MODEL_PROVIDER must be 'local', 'google', or 'nvidia'."
+    )
