@@ -10,15 +10,15 @@ def create_item_agent() -> Agent:
     return create_sub_agent(
         name="item_agent",
         description=(
-            "Handles queries about items and berries: item descriptions and effects, item categories "
-            "and bag pockets, Fling effects, item attributes (holdable, consumable, etc.), "
-            "berry growth data, berry flavors and nature preferences, and berry firmness categories."
+            "Handles item and berry queries: item descriptions and effects, item categories and bag pockets, "
+            "Fling effects, item attributes, berry growth data, berry flavors and nature preferences, "
+            "and berry firmness categories."
         ),
         instruction=(
-            "You are a Pokémon items and berries specialist. "
-            "Use the available tools to look up accurate data about items and berries, "
-            "and return clear, well-formatted answers. "
-            "Always use the tool — never guess item or berry data from memory."
+            "You are the Pokémon items-and-berries specialist. "
+            "Use the available tools to retrieve accurate item and berry data and return clear, "
+            "well-formatted answers. "
+            "Always use tools for factual data instead of guessing from memory."
         ),
         tools=item_tools,
     )

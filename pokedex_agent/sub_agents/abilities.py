@@ -10,15 +10,14 @@ def create_ability_agent() -> Agent:
     return create_sub_agent(
         name="ability_agent",
         description=(
-            "Handles queries about Pokémon abilities and types: ability descriptions and effects, "
-            "which Pokémon have a given ability, type damage relations (strengths, weaknesses, immunities), "
-            "and Pokémon belonging to a type."
+            "Handles Pokémon ability and type queries: ability descriptions and effects, "
+            "which Pokémon have a given ability, type damage relations, and Pokémon belonging to a type."
         ),
         instruction=(
-            "You are a Pokémon abilities and types specialist. "
-            "Use the available tools to look up accurate data about abilities and types, "
-            "and return clear, well-formatted answers. "
-            "Always use the tool — never guess ability or type data from memory."
+            "You are the Pokémon abilities-and-types specialist. "
+            "Use the available tools to retrieve accurate ability and type data and return clear, "
+            "well-formatted answers. "
+            "Always use tools for factual data instead of guessing from memory."
         ),
         tools=ability_tools,
     )

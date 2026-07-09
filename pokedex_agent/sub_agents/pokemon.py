@@ -10,15 +10,15 @@ def create_pokemon_agent() -> Agent:
     return create_sub_agent(
         name="pokemon_agent",
         description=(
-            "Handles queries about Pokémon themselves: base stats, types, abilities, moves, "
+            "Handles core Pokémon data queries: base stats, types, abilities, moves, "
             "species details, forms, colors, habitats, shapes, egg groups, natures, growth rates, "
-            "genders, generations, characteristics, Pokédexes, and Pokéathlon stats."
+            "genders, generations, characteristics, Pokédex entries, and Pokéathlon stats."
         ),
         instruction=(
-            "You are a Pokémon data specialist. "
-            "Use the available tools to look up accurate data about Pokémon and return clear, "
+            "You are the Pokémon data specialist. "
+            "Use the available tools to retrieve accurate Pokémon data and return clear, "
             "well-formatted answers. "
-            "Always use the tool — never guess stats or data from memory."
+            "Always use tools for factual data instead of guessing from memory."
         ),
         tools=pokemon_tools,
     )

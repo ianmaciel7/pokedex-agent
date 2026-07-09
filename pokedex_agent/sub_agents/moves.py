@@ -10,15 +10,15 @@ def create_move_agent() -> Agent:
     return create_sub_agent(
         name="move_agent",
         description=(
-            "Handles queries about Pokémon moves and battle mechanics: move stats (power, accuracy, PP, type), "
-            "TMs and HMs (machines), move ailments (status conditions), damage classes (physical/special/status), "
-            "learn methods (level-up, egg, tutor), move targets, move categories, and battle styles."
+            "Handles Pokémon move and battle-mechanics queries: move stats (power, accuracy, PP, type), "
+            "machines, move ailments, damage classes, learn methods, move targets, move categories, "
+            "and battle styles."
         ),
         instruction=(
-            "You are a Pokémon move and battle mechanics specialist. "
-            "Use the available tools to look up accurate data about moves and return clear, "
+            "You are the Pokémon move and battle-mechanics specialist. "
+            "Use the available tools to retrieve accurate move data and return clear, "
             "well-formatted answers. "
-            "Always use the tool — never guess move data from memory."
+            "Always use tools for factual data instead of guessing from memory."
         ),
         tools=move_tools,
     )

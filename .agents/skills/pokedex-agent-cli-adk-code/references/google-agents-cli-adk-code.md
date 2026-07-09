@@ -1,7 +1,8 @@
 # google-agents-cli-adk-code Reference
 
 Use this reference when editing or generating ADK Python code for the Pokédex
-agent package.
+agent package. Treat official ADK docs and installed `adk --help` output as the
+first source of truth for command behavior.
 
 ## Command Discovery
 
@@ -9,9 +10,9 @@ Do not assume the exact CLI surface. Start by discovering available commands:
 
 ```sh
 google-agents-cli-adk-code --help
-uv run google-agents-cli-adk-code --help
-uv run adk --help
-uv run adk run --help
+UV_CACHE_DIR=/tmp/uv-cache uv run google-agents-cli-adk-code --help
+UV_CACHE_DIR=/tmp/uv-cache uv run adk --help
+UV_CACHE_DIR=/tmp/uv-cache uv run adk run --help
 ```
 
 If the binary is unavailable, continue with repository conventions and ADK
@@ -33,7 +34,8 @@ For a new or changed specialist sub-agent:
 1. Inspect nearby sub-agent modules first.
 2. Define a `create_*_agent()` factory.
 3. Define a module-level `*_agent` instance.
-4. Keep instructions strict about using tools for factual Pokémon data.
+4. Keep instructions strict about using tools for factual Pokémon data and
+   route questions to the right specialist sub-agent.
 5. Export the constructor and instance from `sub_agents/__init__.py`.
 6. Run Ruff and the import/wiring check.
 

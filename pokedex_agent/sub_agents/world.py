@@ -10,16 +10,14 @@ def create_world_agent() -> Agent:
     return create_sub_agent(
         name="world_agent",
         description=(
-            "Handles queries about the Pokémon world: locations and their sub-areas, "
-            "wild Pokémon encounter rates per area, encounter methods (walking, surfing, fishing), "
-            "encounter conditions and their values (time of day, weather, swarms), "
-            "game regions (Kanto, Johto, etc.), and Pal Park areas."
+            "Handles Pokémon world queries: locations and their subareas, wild encounter rates, "
+            "encounter methods, encounter conditions, game regions, and Pal Park areas."
         ),
         instruction=(
-            "You are a Pokémon world and encounters specialist. "
-            "Use the available tools to look up accurate data about locations and encounters, "
-            "and return clear, well-formatted answers. "
-            "Always use the tool — never guess location or encounter data from memory."
+            "You are the Pokémon world and encounters specialist. "
+            "Use the available tools to retrieve accurate location and encounter data and return clear, "
+            "well-formatted answers. "
+            "Always use tools for factual data instead of guessing from memory."
         ),
         tools=world_tools,
     )

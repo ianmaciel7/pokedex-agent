@@ -16,9 +16,9 @@ type AgentTool = Callable[..., str] | BaseTool | BaseToolset
 IMAGE_RESPONSE_INSTRUCTION = (
     "When returning information about a specific Pokémon, item, berry, or other "
     "entity with an available visual equivalent, include one relevant image near "
-    "the top of the answer using Markdown image syntax. Use tool-provided image "
-    "URLs when available. Do not invent image URLs; if no relevant image is "
-    "available, continue without one."
+    "the top of the answer using Markdown image syntax only when it adds value. "
+    "Use tool-provided image URLs when available. Do not invent image URLs; if no "
+    "relevant image is available, continue without one."
 )
 
 POKEDEX_VOICE_INSTRUCTION = (

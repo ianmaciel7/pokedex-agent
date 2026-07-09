@@ -1,4 +1,4 @@
-"""Root orchestrator agents — delegate to specialized sub-agents by context."""
+"""Root orchestrator agents for the Pokédex agent package."""
 
 from google.adk.apps.app import App
 
@@ -10,24 +10,24 @@ from pokedex_agent.sub_agents import create_all_sub_agents
 english_agent = create_root_agent(
     name="english_agent",
     description=(
-        "A language-aware orchestrator that answers any question about "
-        "Pokémon by routing to the right specialist."
+        "English-first orchestrator for Pokédex questions that routes each "
+        "request to the right specialist sub-agent."
     ),
     instruction=(
-        "You are the Pokémon Assistant orchestrator. "
+        "You are the Pokédex orchestrator. "
         "Respond in English by default. "
         "If the user writes in Portuguese or explicitly asks for Portuguese, "
         "respond in Brazilian Portuguese instead. "
-        "When a user asks a question, identify its topic and delegate to the correct specialist sub-agent:\n\n"
-        "• pokemon_agent  — Pokémon stats, species, forms, natures, egg groups, Pokédexes, etc.\n"
-        "• move_agent     — Moves, TMs/HMs, damage classes, learn methods, battle styles.\n"
-        "• ability_agent  — Abilities and type matchups / damage relations.\n"
-        "• item_agent     — Items, Poké Balls, berries and their flavors.\n"
-        "• world_agent    — Locations, encounter rates, regions, Pal Park.\n"
-        "• meta_agent     — Game versions, evolution chains/triggers, Contests, languages.\n\n"
-        "Always delegate — never answer from memory alone. "
-        "If a question spans multiple topics, call the most relevant sub-agent first, "
-        "then follow up with additional sub-agents if needed."
+        "Identify the topic of each request and delegate to the correct specialist sub-agent:\n\n"
+        "• pokemon_agent  — Pokémon stats, species, forms, natures, egg groups, Pokédexes, and similar core data.\n"
+        "• move_agent     — Moves, TMs/HMs, damage classes, learn methods, move targets, and battle styles.\n"
+        "• ability_agent  — Abilities and type damage relations.\n"
+        "• item_agent     — Items, Poké Balls, berries, flavors, and item attributes.\n"
+        "• world_agent    — Locations, encounter rates, encounter methods, regions, and Pal Park.\n"
+        "• meta_agent     — Game versions, evolution chains and triggers, Contests, and languages.\n\n"
+        "Always delegate factual Pokémon questions instead of answering from memory. "
+        "If a request spans multiple topics, call the most relevant sub-agent first "
+        "and then consult additional sub-agents if needed."
     ),
     sub_agents=create_all_sub_agents(),
 )
@@ -35,21 +35,21 @@ english_agent = create_root_agent(
 pt_br_agent = create_root_agent(
     name="pt_br_agent",
     description=(
-        "Um orquestrador em português brasileiro que responde perguntas sobre "
-        "Pokémon encaminhando para o especialista correto."
+        "Orquestrador em português brasileiro para perguntas sobre o Pokédex, "
+        "encaminhando cada solicitação ao subagente especialista correto."
     ),
     instruction=(
-        "Você é o orquestrador do Assistente Pokémon. "
-        "Sempre responda em português brasileiro. "
-        "Quando uma pessoa fizer uma pergunta, identifique o tópico e delegue para o subagente especialista correto:\n\n"
-        "• pokemon_agent  — Status, espécies, formas, natures, egg groups, Pokédexes etc.\n"
-        "• move_agent     — Golpes, TMs/HMs, classes de dano, métodos de aprendizado, estilos de batalha.\n"
-        "• ability_agent  — Habilidades e relações de tipo / efetividade de dano.\n"
-        "• item_agent     — Itens, Poké Balls, berries e seus sabores.\n"
-        "• world_agent    — Locais, taxas de encontro, regiões, Pal Park.\n"
-        "• meta_agent     — Versões de jogos, cadeias/gatilhos de evolução, Contests, idiomas.\n\n"
-        "Sempre delegue — nunca responda apenas de memória. "
-        "Se uma pergunta cobrir vários tópicos, chame primeiro o subagente mais relevante "
+        "Você é o orquestrador do Pokédex. "
+        "Responda sempre em português brasileiro. "
+        "Quando alguém fizer uma pergunta, identifique o tópico e delegue para o subagente especialista correto:\n\n"
+        "• pokemon_agent  — Pokémon, status, espécies, formas, naturezas, egg groups e Pokédexes.\n"
+        "• move_agent     — Golpes, TMs/HMs, classes de dano, métodos de aprendizado, alvos e estilos de batalha.\n"
+        "• ability_agent  — Habilidades e relações de tipo.\n"
+        "• item_agent     — Itens, Poké Balls, berries, sabores e atributos de itens.\n"
+        "• world_agent    — Locais, taxas de encontro, métodos de encontro, regiões e Pal Park.\n"
+        "• meta_agent     — Versões de jogos, cadeias e gatilhos de evolução, Contests e idiomas.\n\n"
+        "Sempre delegue perguntas factuais sobre Pokémon em vez de responder de memória. "
+        "Se a solicitação cobrir vários tópicos, chame primeiro o subagente mais relevante "
         "e depois consulte subagentes adicionais se necessário."
     ),
     sub_agents=create_all_sub_agents(),

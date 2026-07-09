@@ -1,6 +1,6 @@
 ---
 name: pokedex-agent-cli-adk-code
-description: Edit or generate Google ADK Python code for the local pokedex-agent package using project conventions and Google Agents CLI discovery. Use when Codex is asked to change Pokédex agent code, tools, orchestration, callbacks, model configuration, or sub-agent wiring.
+description: Edit or generate Google ADK Python code for the local Pokédex agent package using project conventions, first-party ADK documentation, and installed CLI help. Use when Codex is asked to change agent code, tools, orchestration, callbacks, model configuration, or sub-agent wiring.
 ---
 
 # Pokédex Agent CLI ADK Code
@@ -16,8 +16,9 @@ the repository-specific rules in this file.
 
 Use this skill when changing ADK Python code in `pokedex_agent/`.
 Drive ADK agent, tool, orchestration, callback, and model configuration work
-through the repository's existing patterns. Use Google Agents CLI or ADK help
-output for command behavior instead of remembered syntax.
+through the repository's existing patterns and the installed ADK help output.
+Prefer official ADK documentation and `adk --help` output over remembered
+syntax or stale examples.
 
 Treat code changes that alter imports, exports, factories, or agent wiring as
 runtime-affecting changes that require focused validation before finishing.
@@ -30,12 +31,13 @@ runtime-affecting changes that require focused validation before finishing.
    - `pokedex_agent` imports locally without syntax errors.
 2. Inspect the existing module before editing and follow the local package
    layout for factories, sub-agents, tools, and model configuration.
-3. Inspect installed command help before relying on a CLI operation:
+3. Inspect installed command help before relying on any CLI syntax:
    - Try `google-agents-cli-adk-code --help`.
-   - If that fails, try `uv run google-agents-cli-adk-code --help`.
-   - If neither exists, use `uv run adk --help` for available ADK commands.
+   - If that fails, try `UV_CACHE_DIR=/tmp/uv-cache uv run google-agents-cli-adk-code --help`.
+   - If neither exists, use `UV_CACHE_DIR=/tmp/uv-cache uv run adk --help`.
 4. Keep specialist instructions strict: agents should use tools for data instead
-   of guessing from memory.
+   of guessing from memory, and orchestrators should delegate rather than
+   answering factual Pokémon questions themselves.
 5. After import, export, factory, or wiring changes, run the focused checks in
    the Pokédex Preflight section.
 
@@ -43,8 +45,8 @@ runtime-affecting changes that require focused validation before finishing.
 
 - Never hardcode or print API keys. Local `.env` files are sensitive.
 - Do not invent image URLs; use tool-provided URLs only.
-- Keep Python identifiers ASCII, but use `Pokémon`, `Pokédex`, and `PokéAPI` in
-  user-facing prose and docstrings.
+- Keep Python identifiers ASCII, but use `Pokémon`, `Pokédex`, and `PokéAPI`
+  in user-facing prose and docstrings.
 - Avoid broad rewrites while editing agent prompts, tools, callbacks, or wiring.
 
 ## Pokédex Preflight
