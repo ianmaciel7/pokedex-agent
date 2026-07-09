@@ -40,6 +40,15 @@ runtime-affecting changes that require focused validation before finishing.
    answering factual Pokémon questions themselves.
 5. After import, export, factory, or wiring changes, run the focused checks in
    the Pokédex Preflight section.
+6. Prefer native ADK-friendly tool returns over custom wrapper layers:
+   - Return plain JSON-serializable dict payloads from tool functions.
+   - Prefer `output` and `error` keys for tool responses.
+   - If a response schema is helpful, let the tool module own its response
+     model directly instead of routing through shared builder helpers.
+   - Prefer `TypedDict` payload schemas over broad `object`, `Any`, or
+     `JsonValue` annotations.
+   - Keep `Any` out of function arguments unless there is no safer typing
+     option; Ruff should flag new `Any` argument annotations with `ANN401`.
 
 ## Safety Rules
 
@@ -48,6 +57,8 @@ runtime-affecting changes that require focused validation before finishing.
 - Keep Python identifiers ASCII, but use `Pokémon`, `Pokédex`, and `PokéAPI`
   in user-facing prose and docstrings.
 - Avoid broad rewrites while editing agent prompts, tools, callbacks, or wiring.
+- Avoid introducing shared response-builder wrappers for simple tool payloads
+  when a direct schema instance or direct dict return is clearer.
 
 ## Pokédex Preflight
 

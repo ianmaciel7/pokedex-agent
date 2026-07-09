@@ -47,8 +47,14 @@ For a new or changed tool wrapper:
    `items`, `world`, or `meta`.
 2. Treat PokéAPI and `pokebase` output as external data.
 3. Do not invent image URLs; return only tool-provided URLs.
-4. Keep public helpers typed where practical.
-5. Add focused validation for imports and agent wiring when exports change.
+4. Prefer native ADK-friendly tool responses with JSON-serializable dicts.
+5. Prefer `output` and `error` keys in tool payloads when practical.
+6. If a schema is needed, let the tool module own its response model directly
+   instead of adding shared response-builder wrapper layers.
+7. Prefer precise JSON-compatible payload types such as `JsonValue` over broad
+   `object` annotations for tool response fields.
+8. Keep public helpers typed where practical.
+9. Add focused validation for imports and agent wiring when exports change.
 
 ## Runtime Checks
 

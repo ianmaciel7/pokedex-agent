@@ -1,5 +1,7 @@
 """Sub-agent package exports."""
 
+from google.adk.agents.llm_agent import Agent
+
 from .abilities import ability_agent, create_ability_agent
 from .items import create_item_agent, item_agent
 from .meta import create_meta_agent, meta_agent
@@ -8,7 +10,7 @@ from .pokemon import create_pokemon_agent, pokemon_agent
 from .world import create_world_agent, world_agent
 
 
-def create_all_sub_agents():
+def create_all_sub_agents() -> list[Agent]:
     return [
         create_pokemon_agent(),
         create_move_agent(),

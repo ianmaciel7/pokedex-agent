@@ -24,8 +24,10 @@ dev = [
 target-version = "py312"
 line-length = 88
 
+[tool.ruff.lint]
+extend-select = ["ANN401"]
+
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
 line-ending = "lf"
-

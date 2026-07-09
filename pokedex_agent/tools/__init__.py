@@ -1,4 +1,4 @@
-"""Tools package — exports all context-specific tool lists."""
+"""Tools package — exports the domain tool lists."""
 
 from .pokemon import pokemon_tools
 from .moves import move_tools

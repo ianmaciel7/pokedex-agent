@@ -1,6 +1,7 @@
 """Application-wide ADK plugins."""
 
 import logging
+from collections.abc import Mapping
 
 from google.adk.agents.callback_context import CallbackContext
 from google.adk.models.llm_request import LlmRequest
@@ -9,9 +10,16 @@ from google.adk.plugins.base_plugin import BasePlugin
 from google.adk.tools.base_tool import BaseTool
 from google.adk.tools.tool_context import ToolContext
 from google.genai import types
-from pydantic import JsonValue
+from pydantic import BaseModel
 
 logger = logging.getLogger(__name__)
+
+
+class ToolErrorResponse(BaseModel):
+    """Structured response payload for plugin-level tool errors."""
+
+    input: dict[str, object]
+    error: str
 
 
 def _is_resource_exhausted_error(error: Exception) -> bool:
@@ -106,10 +114,10 @@ class GlobalErrorPlugin(BasePlugin):
         self,
         *,
         tool: BaseTool,
-        tool_args: dict[str, JsonValue],
+        tool_args: Mapping[str, object],
         tool_context: ToolContext,
         error: Exception,
-    ) -> dict[str, JsonValue]:
+    ) -> dict[str, object]:
         logger.exception(
             "Tool error in agent %s while running %s with args %s",
             tool_context.agent_name,
@@ -117,11 +125,12 @@ class GlobalErrorPlugin(BasePlugin):
             tool_args,
             exc_info=error,
         )
-        return {
-            "ok": False,
-            "error": type(error).__name__,
-            "message": (
-                f"The tool '{tool.name}' failed while fetching Pokémon data. "
+        payload = ToolErrorResponse(
+            input=dict(tool_args),
+            error=(
+                f"{type(error).__name__}: "
+                f"The tool failed while fetching Pokémon data. "
                 "Ask the user to retry or provide a more specific identifier."
             ),
-        }
+        )
+        return payload.model_dump()

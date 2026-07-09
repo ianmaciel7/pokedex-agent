@@ -33,6 +33,9 @@ This repository is both a working agent and a study project. The ADK topics used
 - [x] Sub-agent delegation.
 - [x] Function tools for PokéAPI data.
 - [x] Shared model configuration.
+- [x] YAML-backed root agent prompt configuration with `root_agent.yaml`.
+- [x] Dynamic instruction assembly for the root orchestrators and specialist sub-agents.
+- [x] Schema-grounded responses from structured tool outputs.
 - [x] ADK plugin callbacks for model and tool errors.
 - [x] ADK Web.
 - [x] ADK CLI runs.
@@ -119,8 +122,14 @@ is preferred.
 This project is organized as a single ADK agent package in `pokedex_agent/`.
 That directory contains `agent.py`, which exports the default `root_agent`.
 
+The prompt text for the root orchestrators and specialist sub-agents lives in
+[`root_agent.yaml`](root_agent.yaml) and is assembled at runtime so the agent
+instructions stay consistent across the package.
+
 - `pokedex_agent/agent.py` wires the orchestrator agents and ADK app.
 - `pokedex_agent/factory.py` contains shared agent factory helpers.
+- `pokedex_agent/agent_prompts.py` loads and assembles the dynamic agent
+  instructions from `root_agent.yaml`.
 - `pokedex_agent/sub_agents/` contains specialist sub-agents.
 - `pokedex_agent/tools/` contains [PokéAPI](https://pokeapi.co/) tool wrappers
   grouped by domain.
