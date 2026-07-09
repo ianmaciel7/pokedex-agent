@@ -17,9 +17,9 @@ Use the most specific skill that matches the work. If a task touches more than
 one area, start with the narrower skill and use `pokedex-agent-cli-workflow`
 when the task spans multiple Google Agents CLI phases.
 
-- `pokedex-agent-explainer`: use when the task is about understanding the
-  project, giving an overview, teaching the architecture, or walking through
-  how the Pokédex agent works before making changes.
+- `adk-teacher`: use when the task is about understanding the project, giving
+  an overview, teaching the architecture, or walking through how the Pokédex
+  agent works before making changes.
 - `pokedex-agent-cli-adk-code`: use for Google Agents CLI or ADK command work
   around the local agent package, especially when inspecting, running, or
   validating ADK code changes.

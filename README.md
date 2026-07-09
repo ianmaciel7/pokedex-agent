@@ -8,8 +8,8 @@ agents, connect tools, split responsibilities across specialist sub-agents, run
 the project locally, and handle real API data inside an agent workflow.
 
 If you want a guided explanation of the project before changing code, start
-with [`pokedex-agent-explainer`](.agents/skills/pokedex-agent-explainer/SKILL.md).
-It is written like a teacher walking through the architecture step by step.
+with [`adk-teacher`](.agents/skills/adk-teacher/SKILL.md). It is written like a
+teacher walking through the architecture step by step.
 
 ## What it does
 
@@ -26,7 +26,8 @@ delegation, tool calling, model configuration, and ADK plugin callbacks in one
 focused codebase.
 
 For a conceptual walkthrough of the package, the root agent, and the specialist
-sub-agents, the explainer skill in `.agents/skills/` is the best starting point.
+sub-agents, the `adk-teacher` skill in `.agents/skills/` is the best starting
+point.
 
 ## ADK topics used
 
@@ -219,5 +220,5 @@ This is a personal learning project. Start with [AGENTS.md](AGENTS.md) for
 project conventions before changing agent prompts, tools, or wiring.
 
 If you want the “why” before the “how,” read
-[`pokedex-agent-explainer`](.agents/skills/pokedex-agent-explainer/SKILL.md)
-for a guided overview of the project structure and behavior.
+[`adk-teacher`](.agents/skills/adk-teacher/SKILL.md) for a guided overview of
+the project structure and behavior.

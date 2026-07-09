@@ -1,18 +1,18 @@
 ---
-name: pokedex-agent-explainer
+name: adk-teacher
 description: >
-  Use this skill when you want a teacher-like explanation of the Pokédex
-  agent project in this repo. Trigger it for questions about the root agent,
-  sub-agents, prompt text, agent configuration, structured output, tool
-  usage, or ADK code changes for the `pokedex_agent` package. It is useful
-  when the user wants an overview, a conceptual walkthrough, or a step-by-step
-  explanation of how the Pokédex agent works.
+  Use this skill when you want a teacher-like explanation of the ADK agent
+  project in this repo. Trigger it for questions about the root agent,
+  sub-agents, prompt text, agent configuration, structured output, tool usage,
+  or ADK code changes for the `pokedex_agent` package. It is useful when the
+  user wants an overview, a conceptual walkthrough, or a step-by-step
+  explanation of how the agent works.
 ---
 
-# Pokédex Agent Explainer
+# ADK Teacher
 
-Use this skill when you need to explain the local Pokédex agent project in a
-clear, classroom-style way.
+Use this skill when you need to explain the local ADK agent project in a clear,
+classroom-style way.
 
 Think of the explanation in this order:
 
@@ -39,8 +39,15 @@ Read these references based on the task:
 * `references/agent-orientation.md` for instruction-writing patterns.
 * `references/agent-definition.md` for code-based vs config-based agent setup.
 * `references/agent-config.md` for agent generation settings.
+* `references/agent-planning.md` for planning, `BuiltInPlanner`, and
+  `PlanReActPlanner`.
 * `references/agent-structured-data.md` for `input_schema`, `output_schema`,
   and `output_key`.
+
+Primary docs for planning and thinking:
+
+* https://adk.dev/agents/llm-agents/#planning-planner
+* https://ai.google.dev/gemini-api/docs/thinking
 
 ## Teaching style
 
@@ -56,7 +63,8 @@ Explain things like a professor would in a good intro class:
 
 1. Identify whether the change affects prompts, wiring, or structured output.
 2. Use the smallest reference that answers the question.
-3. Keep Pokédex-facing language consistent with the project conventions.
+3. Keep Pokédex-facing language consistent with the project conventions when
+   describing the domain.
 4. Prefer tool-backed facts over guessing about Pokémon data or ADK behavior.
 5. Preserve the existing root-agent and specialist-agent split unless the user
    explicitly wants a redesign.
