@@ -51,7 +51,7 @@ Install dependencies from the project root:
 uv sync
 ```
 
-Create a local environment file:
+Create a local Gemini environment file:
 
 ```sh
 cp .env.example .env
@@ -73,9 +73,13 @@ uv run adk run pokedex_agent "Tell me about Pikachu"
 
 Set `MODEL_PROVIDER` to one of:
 
-- `google`: Gemini API through `GOOGLE_API_KEY` or `GEMINI_API_KEY`.
+- `google`: Gemini API through ADK's documented `GOOGLE_API_KEY`.
 - `nvidia`: NVIDIA NIM through `NVIDIA_NIM_API_KEY`.
 - `local`: local LiteLLM/Ollama model through `LOCAL_MODEL`.
+
+The checked-in `.env.example` is intentionally the normal ADK/Gemini profile.
+Use separate ignored files such as `.env.nvidia` or `.env.ollama` for alternate
+providers.
 
 Example NVIDIA NIM config:
 
@@ -85,6 +89,10 @@ NVIDIA_NIM_API_KEY=REPLACE_WITH_YOUR_NVIDIA_NIM_API_KEY
 NVIDIA_MODEL=nvidia_nim/deepseek-ai/deepseek-v4-flash
 NVIDIA_REASONING_EFFORT=none
 ```
+
+NVIDIA NIM and local LiteLLM models are supported for normal ADK Web text chat.
+ADK Web's audio/video live controls require a Gemini Live model. To use live
+mode, switch to `MODEL_PROVIDER=google` and optionally set `GOOGLE_LIVE_MODEL`.
 
 Do not paste real API keys into chat or commit them to git. Local `.env` files
 are ignored by git.

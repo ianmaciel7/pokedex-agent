@@ -5,6 +5,13 @@ description: Deploy, inspect, update, or delete the local pokedex-agent Google A
 
 # Pokédex Agent CLI Deploy
 
+## Original Skill Reference
+
+This is the Pokédex-local adaptation of the original
+`google-agents-cli-deploy` workflow. Keep the generic CLI guidance in
+`references/google-agents-cli-deploy.md` as the source reference, then apply the
+repository-specific rules in this file.
+
 ## Overview
 
 Use this skill to operate cloud deployments for the `pokedex-agent` Google ADK

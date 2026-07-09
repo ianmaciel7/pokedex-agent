@@ -1,7 +1,9 @@
 import os
+import asyncio
 from typing import AsyncGenerator
 
 from google.adk.models.base_llm import BaseLlm
+from google.adk.models.base_llm_connection import BaseLlmConnection
 from google.adk.models.lite_llm import LiteLlm
 from google.adk.models.llm_request import LlmRequest
 from google.adk.models.llm_response import LlmResponse
@@ -27,18 +29,78 @@ class ConfigurationErrorLlm(BaseLlm):
         )
 
 
+class UnsupportedLiveConnection(BaseLlmConnection):
+    def __init__(self, message: str) -> None:
+        self._closed = asyncio.Event()
+        self._message = message
+        self._warned = False
+
+    async def __aenter__(self) -> "UnsupportedLiveConnection":
+        return self
+
+    async def __aexit__(self, exc_type, exc_value, traceback) -> None:
+        await self.close()
+
+    async def _warn_once(self) -> None:
+        self._warned = True
+
+    async def send_history(self, history: list[types.Content]) -> None:
+        if history and history[-1].role == "user":
+            await self._warn_once()
+
+    async def send_content(self, content: types.Content) -> None:
+        await self._warn_once()
+
+    async def send_realtime(self, blob: types.Blob) -> None:
+        await self._warn_once()
+
+    async def receive(self) -> AsyncGenerator[LlmResponse, None]:
+        while not self._closed.is_set():
+            if self._warned:
+                self._warned = False
+                yield LlmResponse(
+                    content=types.Content(
+                        role="model",
+                        parts=[types.Part.from_text(text=self._message)],
+                    ),
+                    partial=False,
+                )
+            await asyncio.sleep(0.1)
+
+    async def close(self) -> None:
+        self._closed.set()
+
+
+class UnsupportedLiveLlm(BaseLlm):
+    message: str
+
+    async def generate_content_async(
+        self, llm_request: LlmRequest, stream: bool = False
+    ) -> AsyncGenerator[LlmResponse, None]:
+        yield LlmResponse(
+            content=types.Content(
+                role="model",
+                parts=[types.Part.from_text(text=self.message)],
+            ),
+            partial=False,
+        )
+
+    def connect(self, llm_request: LlmRequest) -> UnsupportedLiveConnection:
+        return UnsupportedLiveConnection(self.message)
+
+
 def _configuration_error(message: str) -> ConfigurationErrorLlm:
     return ConfigurationErrorLlm(model="configuration-error", error_message=message)
 
 
 def _google_model_name():
-    api_key = os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")
+    api_key = os.getenv("GOOGLE_API_KEY")
 
     if not api_key or api_key == "dummy":
         return _configuration_error(
             "MODEL_PROVIDER=google requires a valid Gemini API key in the "
             "selected environment file. "
-            "Set GOOGLE_API_KEY or GEMINI_API_KEY."
+            "Set GOOGLE_API_KEY."
         )
 
     if (
@@ -100,4 +162,22 @@ def get_model():
 
     return _configuration_error(
         "MODEL_PROVIDER must be 'local', 'google', or 'nvidia'."
+    )
+
+
+def get_live_model() -> BaseLlm | str:
+    provider = os.getenv("MODEL_PROVIDER", "local").lower()
+
+    if provider == "google":
+        return os.getenv("GOOGLE_LIVE_MODEL", "gemini-live-2.5-flash-native-audio")
+
+    configured_model = getattr(get_model(), "model", provider)
+    return UnsupportedLiveLlm(
+        model=configured_model,
+        message=(
+            f"Live mode is not supported for {configured_model}. Use the normal "
+            "ADK Web text chat with this model, or switch MODEL_PROVIDER=google "
+            "and set GOOGLE_LIVE_MODEL to a Gemini Live model before using the "
+            "audio/video live controls."
+        ),
     )
