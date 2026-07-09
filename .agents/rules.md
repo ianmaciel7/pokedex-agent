@@ -2,6 +2,11 @@
 
 This file stores durable reminders for work inside `.agents/`.
 
+## Scope Rule
+
+Files under `.agents/skills/` may be repository-specific and can mention the
+local project, agent package, or repo conventions.
+
 ## Reference Rule
 
 All files under `references/` must be reusable across projects.
