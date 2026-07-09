@@ -169,7 +169,10 @@ def get_live_model() -> BaseLlm | str:
     provider = os.getenv("MODEL_PROVIDER", "local").lower()
 
     if provider == "google":
-        return os.getenv("GOOGLE_LIVE_MODEL", "gemini-live-2.5-flash-native-audio")
+        return os.getenv(
+            "GOOGLE_LIVE_MODEL",
+            "gemini-2.5-flash-native-audio-preview-12-2025",
+        )
 
     configured_model = getattr(get_model(), "model", provider)
     return UnsupportedLiveLlm(

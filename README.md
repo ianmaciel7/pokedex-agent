@@ -93,6 +93,11 @@ NVIDIA_REASONING_EFFORT=none
 NVIDIA NIM and local LiteLLM models are supported for normal ADK Web text chat.
 ADK Web's audio/video live controls require a Gemini Live model. To use live
 mode, switch to `MODEL_PROVIDER=google` and optionally set `GOOGLE_LIVE_MODEL`.
+For Gemini 2.5 Flash Live, use:
+
+```env
+GOOGLE_LIVE_MODEL=gemini-2.5-flash-native-audio-preview-12-2025
+```
 
 Do not paste real API keys into chat or commit them to git. Local `.env` files
 are ignored by git.
