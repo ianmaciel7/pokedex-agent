@@ -10,7 +10,10 @@ description: Edit or generate Google ADK Python code for the local Pokédex agen
 This is the Pokédex-local adaptation of the original
 `google-agents-cli-adk-code` skill. Keep the generic CLI guidance in
 `references/google-agents-cli-adk-code.md` as the source reference, then apply
-the repository-specific rules in this file.
+the repository-specific rules in this file. For agent wiring and definition
+patterns, also read `references/agent-definition.md` before editing
+`pokedex_agent/agent.py`, `pokedex_agent/factory.py`, or
+`pokedex_agent/sub_agents/*.py`.
 
 ## Overview
 
@@ -30,7 +33,8 @@ runtime-affecting changes that require focused validation before finishing.
    - `pokedex_agent/agent.py` exports the ADK entry point.
    - `pokedex_agent` imports locally without syntax errors.
 2. Inspect the existing module before editing and follow the local package
-   layout for factories, sub-agents, tools, and model configuration.
+   layout for factories, sub-agents, tools, model configuration, and the agent
+   definition patterns in `references/agent-definition.md`.
 3. Inspect installed command help before relying on any CLI syntax:
    - Try `google-agents-cli-adk-code --help`.
    - If that fails, try `UV_CACHE_DIR=/tmp/uv-cache uv run google-agents-cli-adk-code --help`.
