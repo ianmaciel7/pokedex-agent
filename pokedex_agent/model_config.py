@@ -1,6 +1,6 @@
 import os
 import asyncio
-from typing import AsyncGenerator
+from typing import AsyncGenerator, AsyncIterator
 
 from google.adk.models.base_llm import BaseLlm
 from google.adk.models.base_llm_connection import BaseLlmConnection
@@ -54,7 +54,7 @@ class UnsupportedLiveConnection(BaseLlmConnection):
     async def send_realtime(self, blob: types.Blob) -> None:
         await self._warn_once()
 
-    async def receive(self) -> AsyncGenerator[LlmResponse, None]:
+    async def receive(self) -> AsyncIterator[LlmResponse]:
         while not self._closed.is_set():
             if self._warned:
                 self._warned = False
@@ -93,7 +93,7 @@ def _configuration_error(message: str) -> ConfigurationErrorLlm:
     return ConfigurationErrorLlm(model="configuration-error", error_message=message)
 
 
-def _google_model_name():
+def _google_model_name() -> BaseLlm | str:
     api_key = os.getenv("GOOGLE_API_KEY")
 
     if not api_key or api_key == "dummy":
@@ -120,7 +120,7 @@ def _google_model_name():
         )
 
     os.environ["GOOGLE_API_KEY"] = api_key
-    return os.getenv("GOOGLE_MODEL", "gemini-flash-latest")
+    return os.getenv("GOOGLE_MODEL", "gemini-2.5-flash-latest")
 
 
 def _nvidia_model() -> BaseLlm:
@@ -144,7 +144,7 @@ def _nvidia_model() -> BaseLlm:
     )
 
 
-def get_model():
+def get_model() -> BaseLlm | str:
     provider = os.getenv("MODEL_PROVIDER", "local").lower()
 
     if provider == "local":

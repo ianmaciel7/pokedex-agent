@@ -2,12 +2,12 @@
 
 from collections.abc import Callable
 
-from google.adk.agents.llm_agent import Agent
-from google.adk.agents.llm_agent import LlmAgent
+from google.adk.agents.llm_agent import Agent, LlmAgent
 from google.adk.models.base_llm import BaseLlm
 from google.adk.models.registry import LLMRegistry
 from google.adk.tools.base_tool import BaseTool
 from google.adk.tools.base_toolset import BaseToolset
+from pydantic import Field
 
 from pokedex_agent.model_config import get_live_model, get_model
 
@@ -32,7 +32,7 @@ POKEDEX_VOICE_INSTRUCTION = (
 
 
 class PokedexAgent(LlmAgent):
-    live_model: BaseLlm | str
+    live_model: BaseLlm | str = Field(default_factory=get_live_model)
 
     @property
     def canonical_live_model(self) -> BaseLlm:

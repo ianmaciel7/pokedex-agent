@@ -1,7 +1,7 @@
 [project]
 name = "pokedex-agent"
 version = "0.1.0"
-description = "Add your description here"
+description = "A Pokédex-style AI agent built with Google ADK and PokéAPI."
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
@@ -11,7 +11,21 @@ dependencies = [
     "pydantic>=2.13.4",
 ]
 
+[project.scripts]
+pokedex-agent = "pokedex_agent.agent:root_agent"
+
 [dependency-groups]
 dev = [
     "ruff>=0.15.20",
+    "pytest>=8.0.0",
 ]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 88
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"
+

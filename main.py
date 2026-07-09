@@ -1,6 +1,8 @@
-def main():
-    print("Hello from pokedex-agent!")
+import sys
+from google.adk.cli import run_cli
 
+def main() -> None:
+    run_cli()
 
 if __name__ == "__main__":
     main()

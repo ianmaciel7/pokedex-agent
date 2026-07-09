@@ -1,8 +1,10 @@
 """Tools for core Pokémon data: species, stats, forms, natures, and related metadata."""
 
 import pokebase as pb
+from pokedex_agent.tools.utils import safe_fetch
 
 
+@safe_fetch
 def get_pokemon_image_url(pokemon_name: str) -> str:
     """Get the official artwork image URL for a Pokémon.
 
@@ -10,13 +12,13 @@ def get_pokemon_image_url(pokemon_name: str) -> str:
         pokemon_name: The name or Pokédex ID of the Pokémon (e.g. 'pikachu' or '25').
     """
     pokemon = pb.pokemon(pokemon_name)
-    pokemon_id = pokemon.id
-    return (
-        "https://raw.githubusercontent.com/PokeAPI/sprites/master/"
-        f"sprites/pokemon/other/official-artwork/{pokemon_id}.png"
-    )
+    url = pokemon.sprites.other.official_artwork.front_default
+    if not url:
+        return f"No official artwork found for {pokemon_name}."
+    return url
 
 
+@safe_fetch
 def get_pokemon(pokemon_name: str) -> str:
     """Get base information about a Pokémon (stats, types, abilities, moves).
 
@@ -26,6 +28,7 @@ def get_pokemon(pokemon_name: str) -> str:
     return str(pb.pokemon(pokemon_name))
 
 
+@safe_fetch
 def get_pokemon_species(pokemon_species_name: str) -> str:
     """Get species-level information about a Pokémon (flavor text, evolution chain, egg groups).
 
@@ -35,6 +38,7 @@ def get_pokemon_species(pokemon_species_name: str) -> str:
     return str(pb.pokemon_species(pokemon_species_name))
 
 
+@safe_fetch
 def get_pokemon_color(pokemon_color_name: str) -> str:
     """Get Pokémon grouped by their color category.
 
@@ -44,6 +48,7 @@ def get_pokemon_color(pokemon_color_name: str) -> str:
     return str(pb.pokemon_color(pokemon_color_name))
 
 
+@safe_fetch
 def get_pokemon_form(pokemon_form_name: str) -> str:
     """Get information about a specific Pokémon form (e.g. Mega, Alolan).
 
@@ -53,6 +58,7 @@ def get_pokemon_form(pokemon_form_name: str) -> str:
     return str(pb.pokemon_form(pokemon_form_name))
 
 
+@safe_fetch
 def get_pokemon_habitat(pokemon_habitat_name: str) -> str:
     """Get Pokémon grouped by their habitat (e.g. 'cave', 'forest').
 
@@ -62,6 +68,7 @@ def get_pokemon_habitat(pokemon_habitat_name: str) -> str:
     return str(pb.pokemon_habitat(pokemon_habitat_name))
 
 
+@safe_fetch
 def get_pokemon_shape(pokemon_shape_name: str) -> str:
     """Get Pokémon grouped by their body shape (e.g. 'quadruped', 'humanoid').
 
@@ -71,6 +78,7 @@ def get_pokemon_shape(pokemon_shape_name: str) -> str:
     return str(pb.pokemon_shape(pokemon_shape_name))
 
 
+@safe_fetch
 def get_characteristic(characteristic_id: str) -> str:
     """Get a Pokémon characteristic (highest stat flavour text, e.g. 'Loves to eat').
 
@@ -80,6 +88,7 @@ def get_characteristic(characteristic_id: str) -> str:
     return str(pb.characteristic(characteristic_id))
 
 
+@safe_fetch
 def get_gender(gender_name: str) -> str:
     """Get gender ratio and Pokémon lists for a gender category.
 
@@ -89,6 +98,7 @@ def get_gender(gender_name: str) -> str:
     return str(pb.gender(gender_name))
 
 
+@safe_fetch
 def get_generation(generation_name: str) -> str:
     """Get information about a game generation (e.g. 'generation-i').
 
@@ -98,6 +108,7 @@ def get_generation(generation_name: str) -> str:
     return str(pb.generation(generation_name))
 
 
+@safe_fetch
 def get_growth_rate(growth_rate_name: str) -> str:
     """Get a Pokémon growth rate (experience curve, e.g. 'slow', 'fast').
 
@@ -107,6 +118,7 @@ def get_growth_rate(growth_rate_name: str) -> str:
     return str(pb.growth_rate(growth_rate_name))
 
 
+@safe_fetch
 def get_nature(nature_name: str) -> str:
     """Get a Pokémon nature and the stats it raises/lowers (e.g. 'adamant').
 
@@ -116,6 +128,7 @@ def get_nature(nature_name: str) -> str:
     return str(pb.nature(nature_name))
 
 
+@safe_fetch
 def get_egg_group(egg_group_name: str) -> str:
     """Get a Pokémon egg group and its members (e.g. 'monster', 'fairy').
 
@@ -125,6 +138,7 @@ def get_egg_group(egg_group_name: str) -> str:
     return str(pb.egg_group(egg_group_name))
 
 
+@safe_fetch
 def get_stat(stat_name: str) -> str:
     """Get information about a base stat (e.g. 'speed', 'attack').
 
@@ -134,6 +148,7 @@ def get_stat(stat_name: str) -> str:
     return str(pb.stat(stat_name))
 
 
+@safe_fetch
 def get_pokeathlon_stat(pokeathlon_stat_name: str) -> str:
     """Get information about a Pokéathlon stat (e.g. 'speed', 'power').
 
@@ -143,6 +158,7 @@ def get_pokeathlon_stat(pokeathlon_stat_name: str) -> str:
     return str(pb.pokeathlon_stat(pokeathlon_stat_name))
 
 
+@safe_fetch
 def get_pokedex(pokedex_name: str) -> str:
     """Get information about a regional Pokédex (e.g. 'kanto', 'national').
 

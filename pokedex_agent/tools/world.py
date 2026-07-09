@@ -1,8 +1,10 @@
 """Tools for locations, encounters, and regions."""
 
 import pokebase as pb
+from pokedex_agent.tools.utils import safe_fetch
 
 
+@safe_fetch
 def get_location(location_name: str) -> str:
     """Get information about a location in the Pokémon world (e.g. 'pallet-town').
 
@@ -12,6 +14,7 @@ def get_location(location_name: str) -> str:
     return str(pb.location(location_name))
 
 
+@safe_fetch
 def get_location_area(location_area_name: str) -> str:
     """Get a specific area within a location and its wild Pokémon encounter rates.
 
@@ -21,6 +24,7 @@ def get_location_area(location_area_name: str) -> str:
     return str(pb.location_area(location_area_name))
 
 
+@safe_fetch
 def get_region(region_name: str) -> str:
     """Get information about a game region (e.g. 'kanto', 'johto').
 
@@ -30,6 +34,7 @@ def get_region(region_name: str) -> str:
     return str(pb.region(region_name))
 
 
+@safe_fetch
 def get_encounter_condition(encounter_condition_name: str) -> str:
     """Get a condition that affects wild Pokémon encounters (e.g. 'swarm', 'time').
 
@@ -39,6 +44,7 @@ def get_encounter_condition(encounter_condition_name: str) -> str:
     return str(pb.encounter_condition(encounter_condition_name))
 
 
+@safe_fetch
 def get_encounter_condition_value(encounter_condition_value_name: str) -> str:
     """Get a specific value for an encounter condition (e.g. 'time-morning').
 
@@ -48,6 +54,7 @@ def get_encounter_condition_value(encounter_condition_value_name: str) -> str:
     return str(pb.encounter_condition_value(encounter_condition_value_name))
 
 
+@safe_fetch
 def get_encounter_method(encounter_method_name: str) -> str:
     """Get a method of encountering wild Pokémon (e.g. 'walk', 'surf', 'fishing').
 
@@ -57,6 +64,7 @@ def get_encounter_method(encounter_method_name: str) -> str:
     return str(pb.encounter_method(encounter_method_name))
 
 
+@safe_fetch
 def get_pal_park_area(pal_park_area_name: str) -> str:
     """Get a Pal Park area (e.g. 'field', 'forest', 'mountain', 'pond', 'sea').
 

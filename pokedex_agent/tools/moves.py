@@ -1,8 +1,10 @@
 """Tools for Pokémon moves and battle mechanics."""
 
 import pokebase as pb
+from pokedex_agent.tools.utils import safe_fetch
 
 
+@safe_fetch
 def get_move(move_name: str) -> str:
     """Get detailed information about a Pokémon move (power, accuracy, type, PP).
 
@@ -12,6 +14,7 @@ def get_move(move_name: str) -> str:
     return str(pb.move(move_name))
 
 
+@safe_fetch
 def get_move_ailment(move_ailment_name: str) -> str:
     """Get a move ailment (status condition a move can inflict, e.g. 'burn', 'paralysis').
 
@@ -21,6 +24,7 @@ def get_move_ailment(move_ailment_name: str) -> str:
     return str(pb.move_ailment(move_ailment_name))
 
 
+@safe_fetch
 def get_move_battle_style(move_battle_style_name: str) -> str:
     """Get a move battle style used in Pokémon Battle Palace (e.g. 'attack', 'defense').
 
@@ -30,6 +34,7 @@ def get_move_battle_style(move_battle_style_name: str) -> str:
     return str(pb.move_battle_style(move_battle_style_name))
 
 
+@safe_fetch
 def get_move_category(move_category_name: str) -> str:
     """Get a move category (e.g. 'damage', 'ailment', 'heal').
 
@@ -39,6 +44,7 @@ def get_move_category(move_category_name: str) -> str:
     return str(pb.move_category(move_category_name))
 
 
+@safe_fetch
 def get_move_damage_class(move_damage_class_name: str) -> str:
     """Get a move damage class (e.g. 'physical', 'special', 'status').
 
@@ -48,6 +54,7 @@ def get_move_damage_class(move_damage_class_name: str) -> str:
     return str(pb.move_damage_class(move_damage_class_name))
 
 
+@safe_fetch
 def get_move_learn_method(move_learn_method_name: str) -> str:
     """Get a method by which a Pokémon can learn a move (e.g. 'level-up', 'egg', 'tutor').
 
@@ -57,6 +64,7 @@ def get_move_learn_method(move_learn_method_name: str) -> str:
     return str(pb.move_learn_method(move_learn_method_name))
 
 
+@safe_fetch
 def get_move_target(move_target_name: str) -> str:
     """Get a move target (who the move affects, e.g. 'selected-pokemon', 'all-opponents').
 
@@ -66,6 +74,7 @@ def get_move_target(move_target_name: str) -> str:
     return str(pb.move_target(move_target_name))
 
 
+@safe_fetch
 def get_machine(machine_id: str) -> str:
     """Get information about a TM or HM machine (which move it teaches, which games it appears in).
 

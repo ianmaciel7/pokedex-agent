@@ -1,8 +1,10 @@
 """Tools for game metadata: versions, contests, languages, and evolution."""
 
 import pokebase as pb
+from pokedex_agent.tools.utils import safe_fetch
 
 
+@safe_fetch
 def get_version(version_name: str) -> str:
     """Get information about a specific game version (e.g. 'red', 'gold', 'sword').
 
@@ -12,6 +14,7 @@ def get_version(version_name: str) -> str:
     return str(pb.version(version_name))
 
 
+@safe_fetch
 def get_version_group(version_group_name: str) -> str:
     """Get a version group (paired games sharing mechanics, e.g. 'red-blue', 'sun-moon').
 
@@ -21,6 +24,7 @@ def get_version_group(version_group_name: str) -> str:
     return str(pb.version_group(version_group_name))
 
 
+@safe_fetch
 def get_evolution_chain(evolution_chain_id: str) -> str:
     """Get the full evolution chain for a Pokémon family by chain ID.
 
@@ -30,6 +34,7 @@ def get_evolution_chain(evolution_chain_id: str) -> str:
     return str(pb.evolution_chain(evolution_chain_id))
 
 
+@safe_fetch
 def get_evolution_trigger(evolution_trigger_name: str) -> str:
     """Get an evolution trigger (the condition that triggers evolution, e.g. 'level-up', 'trade').
 
@@ -39,6 +44,7 @@ def get_evolution_trigger(evolution_trigger_name: str) -> str:
     return str(pb.evolution_trigger(evolution_trigger_name))
 
 
+@safe_fetch
 def get_contest_type(contest_type_name: str) -> str:
     """Get a Pokémon Contest type (e.g. 'cool', 'cute', 'smart').
 
@@ -48,6 +54,7 @@ def get_contest_type(contest_type_name: str) -> str:
     return str(pb.contest_type(contest_type_name))
 
 
+@safe_fetch
 def get_contest_effect(contest_effect_id: str) -> str:
     """Get the effect of a move when used in a Pokémon Contest.
 
@@ -57,6 +64,7 @@ def get_contest_effect(contest_effect_id: str) -> str:
     return str(pb.contest_effect(contest_effect_id))
 
 
+@safe_fetch
 def get_super_contest_effect(super_contest_effect_id: str) -> str:
     """Get the effect of a move when used in a Super Contest.
 
@@ -66,6 +74,7 @@ def get_super_contest_effect(super_contest_effect_id: str) -> str:
     return str(pb.super_contest_effect(super_contest_effect_id))
 
 
+@safe_fetch
 def get_language(language_name: str) -> str:
     """Get information about a supported game language (e.g. 'en', 'ja', 'fr').
 
