@@ -1,79 +1,70 @@
----
-name: pokedex-agent-cli-workflow
-description: Plan or run the full development workflow for the local pokedex-agent Google ADK package, from code changes and scaffold through evals, observability, and deployment. Use when Codex is asked for an end-to-end Pokédex ADK workflow, lifecycle, or recommended command sequence.
----
+# Google Agents CLI Reference
 
-# Pokédex Agent CLI Workflow
+Use this reference when working with a Google Agents CLI command. Treat
+official documentation and installed `--help` output as the first source of
+truth for command behavior.
 
-## Original Skill Reference
+## Command Discovery
 
-This is the Pokédex-local adaptation of the original
-`google-agents-cli-workflow` skill. Keep the generic CLI guidance in
-`references/google-agents-cli-workflow.md` as the source reference, then apply
-the repository-specific rules in this file.
+Do not assume the exact CLI surface. Start by discovering the installed
+command family and the relevant subcommands from `--help`.
 
-## Overview
+If the binary is unavailable, continue with the local project's existing
+structure when possible. Ask before adding new dependencies.
 
-Use this skill to coordinate end-to-end development for the `pokedex-agent`
-Google ADK package. Drive lifecycle work through the narrower local skills when
-the request becomes specific, and discover installed Google Agents CLI command
-surfaces before assuming exact syntax.
+## Required Inputs
 
-Treat code changes, evals, observability, and deployment as separate phases with
-their own validation. Keep Agent Runtime / Agent Engine as the default cloud
-target when the user does not specify one.
+Resolve these before taking action:
 
-## Workflow
+- Target package, app path, or resource
+- Intended task or phase
+- Expected runtime behavior
+- Required credentials, without printing secret values
 
-1. Confirm the repository looks like this package:
-   - `pyproject.toml` project name is `pokedex-agent`.
-   - `pokedex_agent/agent.py` exports the ADK entry point.
-   - `pokedex_agent` imports locally without syntax errors.
-2. Identify the requested lifecycle phase:
-   - Code changes: use `pokedex-agent-cli-adk-code`.
-   - Project structure: use `pokedex-agent-cli-scaffold`.
-   - Evals: use `pokedex-agent-cli-eval`.
-   - Deployment: use `pokedex-agent-cli-deploy`.
-   - Logs, traces, and runtime status: use `pokedex-agent-cli-observability`.
-3. Inspect installed CLI help before using commands:
-   - Try the phase-specific `google-agents-cli-* --help`.
-   - If that fails, try `uv run google-agents-cli-* --help`.
-   - If neither exists, use the repository's local `uv run adk --help` surface
-     when applicable.
-4. Run local quality gates before runtime or cloud actions.
-5. Parse and report the command used, result, skipped checks, and any missing
-   credentials or unavailable CLI packages.
-6. For cloud operations, verify project, region, target runtime, and resource ID
-   before and after the CLI call.
+## Execution Flow
 
-## Safety Rules
+Use this workflow when executing the task:
 
-- Never commit or print API keys, tokens, credentials, or local `.env` files.
-- Do not invent project IDs, regions, service accounts, image names, deployment
-  IDs, trace IDs, or resource IDs.
-- Ask before deleting a cloud deployment unless deletion was explicitly
-  requested in the current turn.
-- Prefer the installed CLI's help output over remembered syntax.
+### Primary Actions
 
-## Pokédex Preflight
+1. Identify the exact target of the change or command.
+2. Confirm the intended command family from installed help output.
+3. Resolve the minimum required inputs before proceeding.
+4. Use the narrowest command or workflow that satisfies the request.
+5. Keep the next action explicit and easy to validate.
 
-Run these focused checks before runtime or cloud actions when files changed:
+### Secondary Actions
 
-```sh
-uv run ruff check pokedex_agent
-uv run python -c "import pokedex_agent.agent; from pokedex_agent.sub_agents import create_all_sub_agents; print(len(create_all_sub_agents()))"
-```
+1. Re-run focused commands when clarification is needed.
+2. Prefer small, verifiable steps over broad speculative changes.
+3. Distinguish command issues, environment issues, and product issues.
+4. Capture the relevant identifiers, outputs, or state changes.
 
-If runtime behavior or ADK startup changed, run a focused ADK check when
-credentials are available:
+## Validation
 
-```sh
-uv run adk run pokedex_agent "Tell me about Pikachu"
-```
+Run the relevant `--help` command and any focused verification step that matches
+the task.
 
-## CLI Guidance
+If runtime behavior changed and credentials are available, run the smallest
+relevant verification command for the current target.
 
-Read `references/google-agents-cli-workflow.md` when planning or executing a
-multi-phase workflow that spans code, scaffold, evals, observability, or
-deployment. Use the reference as a pattern, then prefer the installed CLI's
-`--help` output over any remembered syntax.
+## Reporting
+
+Report:
+
+- Commands used
+- Files changed or resources affected
+- Checks passed, failed, or skipped
+- Any assumptions about credentials, command availability, or target identity
+
+## Failure Handling
+
+- Missing command: ask whether to add the dependency to the project.
+- Authentication failure: verify credentials without printing secret values.
+- Permission failure: identify the missing permission or API from the error.
+- Ambiguous CLI syntax: summarize the relevant help output and use the installed form.
+
+## Safety
+
+- Do not print or commit API keys, tokens, credentials, or local `.env` values.
+- Prefer installed CLI help output over remembered syntax.

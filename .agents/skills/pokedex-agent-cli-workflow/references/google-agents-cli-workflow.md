@@ -1,73 +1,70 @@
-# google-agents-cli-workflow Reference
+# Google Agents CLI Reference
 
-Use this reference when planning or running an end-to-end Google ADK agent
-development workflow for the Pokédex agent package.
-
-## Original Skill
-
-This reference preserves the generic `google-agents-cli-workflow` intent for
-the repository-local `pokedex-agent-cli-workflow` skill. Treat this file as the
-source reference for generic Google Agents CLI workflow behavior, then apply the
-Pokédex-specific conventions from the parent `SKILL.md`.
+Use this reference when working with a Google Agents CLI command. Treat
+official documentation and installed `--help` output as the first source of
+truth for command behavior.
 
 ## Command Discovery
 
-Do not assume the exact CLI surface. Start by discovering available commands:
+Do not assume the exact CLI surface. Start by discovering the installed
+command family and the relevant subcommands from `--help`.
 
-```sh
-uv run adk --help
-uv run adk run --help
-uv run adk eval --help
-google-agents-cli-deploy --help
-uv run google-agents-cli-deploy --help
-```
+If the binary is unavailable, continue with the local project's existing
+structure when possible. Ask before adding new dependencies.
 
-If a dedicated Google Agents CLI command is unavailable, continue with the
-installed ADK command surface and repository conventions. Ask before adding new
-dependencies.
+## Required Inputs
 
-## Workflow Phases
+Resolve these before taking action:
 
-Use the narrow local skills as the workflow moves from planning into action:
+- Target package, app path, or resource
+- Intended task or phase
+- Expected runtime behavior
+- Required credentials, without printing secret values
 
-- `pokedex-agent-cli-adk-code` for ADK Python code, tools, callbacks, model
-  configuration, and sub-agent wiring.
-- `pokedex-agent-cli-scaffold` for package structure, sub-agents, tool modules,
-  and local skills.
-- `pokedex-agent-cli-eval` for behavior evals and regression checks.
-- `pokedex-agent-cli-observability` for deployed logs, traces, metrics, and
-  runtime inspection.
-- `pokedex-agent-cli-deploy` for Agent Runtime / Agent Engine deployment
-  lifecycle actions.
+## Execution Flow
 
-## Local Quality Gates
+Use this workflow when executing the task:
 
-Run these checks before cloud actions or when code changed:
+### Primary Actions
 
-```sh
-uv run ruff check pokedex_agent
-uv run python -c "import pokedex_agent.agent; from pokedex_agent.sub_agents import create_all_sub_agents; print(len(create_all_sub_agents()))"
-```
+1. Identify the exact target of the change or command.
+2. Confirm the intended command family from installed help output.
+3. Resolve the minimum required inputs before proceeding.
+4. Use the narrowest command or workflow that satisfies the request.
+5. Keep the next action explicit and easy to validate.
 
-For behavior checks, prefer focused ADK runs when credentials are available:
+### Secondary Actions
 
-```sh
-uv run adk run pokedex_agent "Tell me about Pikachu"
-```
+1. Re-run focused commands when clarification is needed.
+2. Prefer small, verifiable steps over broad speculative changes.
+3. Distinguish command issues, environment issues, and product issues.
+4. Capture the relevant identifiers, outputs, or state changes.
+
+## Validation
+
+Run the relevant `--help` command and any focused verification step that matches
+the task.
+
+If runtime behavior changed and credentials are available, run the smallest
+relevant verification command for the current target.
 
 ## Reporting
 
 Report:
 
-- The phase or skill used.
-- The commands run.
-- Whether checks passed, failed, or were skipped.
-- Any credential, command availability, or cloud target assumptions.
-- The next safest action if a phase cannot continue.
+- Commands used
+- Files changed or resources affected
+- Checks passed, failed, or skipped
+- Any assumptions about credentials, command availability, or target identity
+
+## Failure Handling
+
+- Missing command: ask whether to add the dependency to the project.
+- Authentication failure: verify credentials without printing secret values.
+- Permission failure: identify the missing permission or API from the error.
+- Ambiguous CLI syntax: summarize the relevant help output and use the installed form.
 
 ## Safety
 
 - Do not print or commit API keys, tokens, credentials, or local `.env` values.
-- Verify project, region, target, and deployment identity before cloud actions.
-- Treat eval fixtures, logs, and traces as potentially sensitive.
 - Prefer installed CLI help output over remembered syntax.

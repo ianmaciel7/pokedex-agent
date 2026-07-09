@@ -1,88 +1,70 @@
----
-name: pokedex-agent-cli-adk-code
-description: Edit or generate Google ADK Python code for the local Pokédex agent package using project conventions, first-party ADK documentation, and installed CLI help. Use when Codex is asked to change agent code, tools, orchestration, callbacks, model configuration, or sub-agent wiring.
----
+# Google Agents CLI Reference
 
-# Pokédex Agent CLI ADK Code
+Use this reference when working with a Google Agents CLI command. Treat
+official documentation and installed `--help` output as the first source of
+truth for command behavior.
 
-## Original Skill Reference
+## Command Discovery
 
-This is the Pokédex-local adaptation of the original
-`google-agents-cli-adk-code` skill. Keep the generic CLI guidance in
-`references/google-agents-cli-adk-code.md` as the source reference, then apply
-the repository-specific rules in this file. For agent wiring and definition
-patterns, also read `references/agent-definition.md` before editing
-`pokedex_agent/agent.py`, `pokedex_agent/factory.py`, or
-`pokedex_agent/sub_agents/*.py`.
+Do not assume the exact CLI surface. Start by discovering the installed
+command family and the relevant subcommands from `--help`.
 
-## Overview
+If the binary is unavailable, continue with the local project's existing
+structure when possible. Ask before adding new dependencies.
 
-Use this skill when changing ADK Python code in `pokedex_agent/`.
-Drive ADK agent, tool, orchestration, callback, and model configuration work
-through the repository's existing patterns and the installed ADK help output.
-Prefer official ADK documentation and `adk --help` output over remembered
-syntax or stale examples.
+## Required Inputs
 
-Treat code changes that alter imports, exports, factories, or agent wiring as
-runtime-affecting changes that require focused validation before finishing.
+Resolve these before taking action:
 
-## Workflow
+- Target package, app path, or resource
+- Intended task or phase
+- Expected runtime behavior
+- Required credentials, without printing secret values
 
-1. Confirm the repository looks like this package:
-   - `pyproject.toml` project name is `pokedex-agent`.
-   - `pokedex_agent/agent.py` exports the ADK entry point.
-   - `pokedex_agent` imports locally without syntax errors.
-2. Inspect the existing module before editing and follow the local package
-   layout for factories, sub-agents, tools, model configuration, and the agent
-   definition patterns in `references/agent-definition.md`.
-3. Inspect installed command help before relying on any CLI syntax:
-   - Try `google-agents-cli-adk-code --help`.
-   - If that fails, try `UV_CACHE_DIR=/tmp/uv-cache uv run google-agents-cli-adk-code --help`.
-   - If neither exists, use `UV_CACHE_DIR=/tmp/uv-cache uv run adk --help`.
-4. Keep specialist instructions strict: agents should use tools for data instead
-   of guessing from memory, and orchestrators should delegate rather than
-   answering factual Pokémon questions themselves.
-5. After import, export, factory, or wiring changes, run the focused checks in
-   the Pokédex Preflight section.
-6. Prefer native ADK-friendly tool returns over custom wrapper layers:
-   - Return plain JSON-serializable dict payloads from tool functions.
-   - Prefer `output` and `error` keys for tool responses.
-   - If a response schema is helpful, let the tool module own its response
-     model directly instead of routing through shared builder helpers.
-   - Prefer `TypedDict` payload schemas over broad `object`, `Any`, or
-     `JsonValue` annotations.
-   - Keep `Any` out of function arguments unless there is no safer typing
-     option; Ruff should flag new `Any` argument annotations with `ANN401`.
+## Execution Flow
 
-## Safety Rules
+Use this workflow when executing the task:
 
-- Never hardcode or print API keys. Local `.env` files are sensitive.
-- Do not invent image URLs; use tool-provided URLs only.
-- Keep Python identifiers ASCII, but use `Pokémon`, `Pokédex`, and `PokéAPI`
-  in user-facing prose and docstrings.
-- Avoid broad rewrites while editing agent prompts, tools, callbacks, or wiring.
-- Avoid introducing shared response-builder wrappers for simple tool payloads
-  when a direct schema instance or direct dict return is clearer.
+### Primary Actions
 
-## Pokédex Preflight
+1. Identify the exact target of the change or command.
+2. Confirm the intended command family from installed help output.
+3. Resolve the minimum required inputs before proceeding.
+4. Use the narrowest command or workflow that satisfies the request.
+5. Keep the next action explicit and easy to validate.
 
-Run these focused checks before finishing code changes:
+### Secondary Actions
 
-```sh
-uv run ruff check pokedex_agent
-uv run python -c "import pokedex_agent.agent; from pokedex_agent.sub_agents import create_all_sub_agents; print(len(create_all_sub_agents()))"
-```
+1. Re-run focused commands when clarification is needed.
+2. Prefer small, verifiable steps over broad speculative changes.
+3. Distinguish command issues, environment issues, and product issues.
+4. Capture the relevant identifiers, outputs, or state changes.
 
-If runtime behavior or ADK startup changed, run a focused ADK check when
-credentials are available:
+## Validation
 
-```sh
-uv run adk run pokedex_agent "Tell me about Pikachu"
-```
+Run the relevant `--help` command and any focused verification step that matches
+the task.
 
-## CLI Guidance
+If runtime behavior changed and credentials are available, run the smallest
+relevant verification command for the current target.
 
-Read `references/google-agents-cli-adk-code.md` when planning or executing
-actual ADK code, tool, orchestration, callback, or runtime behavior work. Use
-the reference as a pattern, then prefer installed CLI and ADK help output over
-any remembered syntax.
+## Reporting
+
+Report:
+
+- Commands used
+- Files changed or resources affected
+- Checks passed, failed, or skipped
+- Any assumptions about credentials, command availability, or target identity
+
+## Failure Handling
+
+- Missing command: ask whether to add the dependency to the project.
+- Authentication failure: verify credentials without printing secret values.
+- Permission failure: identify the missing permission or API from the error.
+- Ambiguous CLI syntax: summarize the relevant help output and use the installed form.
+
+## Safety
+
+- Do not print or commit API keys, tokens, credentials, or local `.env` values.
+- Prefer installed CLI help output over remembered syntax.

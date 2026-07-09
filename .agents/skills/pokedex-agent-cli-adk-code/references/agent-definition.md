@@ -53,7 +53,7 @@ Code-based definitions are flexible, but they require developers to read and mod
 
 An Agent Config defines the agent with a YAML file instead of defining everything directly in code.
 
-A basic config-based agent uses a file like `root_agent.yaml`.
+A basic config-based agent uses a file like `agent.yaml`.
 
 ```yaml
 name: assistant_agent
@@ -77,7 +77,7 @@ adk create path/to/my_app --model gemini-flash-latest --api_key YOUR_KEY
 Depending on the backend, `--project` and `--region` may also be accepted for
 Vertex AI-backed runs.
 
-This generates a project containing `root_agent.yaml` and `.env`.
+This typically generates a project containing an agent config file and `.env`.
 
 Use this method when the agent can be described mostly through declarative fields such as `name`, `model`, `description`, `instruction`, `tools`, and `sub_agents`.
 
@@ -96,7 +96,7 @@ Agent Config is easier to read and change, but it is less flexible than code. Wh
 
 ### Practical pattern
 
-In this repository, `root_agent.yaml` is used as a prompt/config source while
+In a common hybrid setup, a YAML file is used as a prompt/config source while
 the actual agent wiring stays in Python. That makes the definition hybrid:
 
 * YAML owns the shared instructions, root prompts, and specialist prompts.

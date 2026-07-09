@@ -1,76 +1,70 @@
-# google-agents-cli-observability Reference
+# Google Agents CLI Reference
 
-Use this reference when inspecting logs, traces, metrics, status, or runtime
-errors for a deployed Pokédex ADK agent.
+Use this reference when working with a Google Agents CLI command. Treat
+official documentation and installed `--help` output as the first source of
+truth for command behavior.
 
 ## Command Discovery
 
-Do not assume the exact observability command. Start by discovering available
-commands:
+Do not assume the exact CLI surface. Start by discovering the installed
+command family and the relevant subcommands from `--help`.
 
-```sh
-google-agents-cli-observability --help
-uv run google-agents-cli-observability --help
-google-agents-cli-deploy --help
-uv run google-agents-cli-deploy --help
-```
-
-If the observability CLI is unavailable, inspect the deploy CLI for list,
-describe, status, logs, or trace commands. If neither CLI is available, report
-the missing tooling and ask whether to install it.
+If the binary is unavailable, continue with the local project's existing
+structure when possible. Ask before adding new dependencies.
 
 ## Required Inputs
 
-Resolve these before cloud log or trace calls:
+Resolve these before taking action:
 
-- Google Cloud project ID.
-- Region.
-- Runtime target, such as Agent Runtime, Agent Engine, Cloud Run, or GKE.
-- Deployment name, resource ID, endpoint, service name, or trace ID.
-- Time window for logs.
-- Severity or error filter, when provided.
+- Target package, app path, or resource
+- Intended task or phase
+- Expected runtime behavior
+- Required credentials, without printing secret values
 
-Use `gcloud config get-value project` and `gcloud config get-value compute/region`
-as hints only. Ask for missing values that cannot be safely inferred.
+## Execution Flow
 
-## Inspection Flow
+Use this workflow when executing the task:
 
-1. Confirm the deployment identity with list or describe commands.
-2. Inspect status or health fields before reading logs.
-3. Read recent error and warning logs for the requested time window.
-4. Follow trace IDs or dashboard links emitted by the CLI.
-5. Report concise findings with timestamps and resource IDs.
+### Primary Actions
 
-## Typical Command Intent
+1. Identify the exact target of the change or command.
+2. Confirm the intended command family from installed help output.
+3. Resolve the minimum required inputs before proceeding.
+4. Use the narrowest command or workflow that satisfies the request.
+5. Keep the next action explicit and easy to validate.
 
-Use the installed CLI's help output to choose exact syntax. Intended operations
-may include:
+### Secondary Actions
 
-```sh
-google-agents-cli-observability logs DEPLOYMENT_ID --project PROJECT_ID --region REGION
-google-agents-cli-observability traces DEPLOYMENT_ID --project PROJECT_ID --region REGION
-google-agents-cli-deploy agent-engine logs DEPLOYMENT_ID --project PROJECT_ID --region REGION
-```
+1. Re-run focused commands when clarification is needed.
+2. Prefer small, verifiable steps over broad speculative changes.
+3. Distinguish command issues, environment issues, and product issues.
+4. Capture the relevant identifiers, outputs, or state changes.
 
-If the CLI exposes Cloud Logging commands, use the filters it suggests rather
-than inventing resource labels.
+## Validation
+
+Run the relevant `--help` command and any focused verification step that matches
+the task.
+
+If runtime behavior changed and credentials are available, run the smallest
+relevant verification command for the current target.
 
 ## Reporting
 
 Report:
 
-- Target project, region, runtime, and deployment ID.
-- Time window inspected.
-- Error count or notable severity levels.
-- Short redacted log snippets only when useful.
-- Trace IDs and dashboard links when available.
-- Whether the evidence points to auth, permissions, dependency, model provider,
-  runtime startup, or application logic.
+- Commands used
+- Files changed or resources affected
+- Checks passed, failed, or skipped
+- Any assumptions about credentials, command availability, or target identity
 
 ## Failure Handling
 
-- Authentication failure: verify with `gcloud auth list`; use
-  `gcloud-auth-verification` if available.
-- Permission failure: identify the missing IAM permission from the error.
-- Missing resource: re-check project, region, runtime target, and deployment ID.
-- Oversized logs: narrow by time window, severity, trace ID, or deployment ID.
+- Missing command: ask whether to add the dependency to the project.
+- Authentication failure: verify credentials without printing secret values.
+- Permission failure: identify the missing permission or API from the error.
+- Ambiguous CLI syntax: summarize the relevant help output and use the installed form.
+
+## Safety
+
+- Do not print or commit API keys, tokens, credentials, or local `.env` values.
+- Prefer installed CLI help output over remembered syntax.

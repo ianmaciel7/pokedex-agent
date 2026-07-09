@@ -1,111 +1,70 @@
-# google-agents-cli-deploy Reference
+# Google Agents CLI Reference
 
-Use this reference when a user asks to create, update, inspect, observe, or
-delete a cloud deployment for the Pokédex ADK agent.
+Use this reference when working with a Google Agents CLI command. Treat
+official documentation and installed `--help` output as the first source of
+truth for command behavior.
 
 ## Command Discovery
 
-Do not assume the exact CLI surface. Start each session by discovering the
-installed command:
+Do not assume the exact CLI surface. Start by discovering the installed
+command family and the relevant subcommands from `--help`.
 
-```sh
-google-agents-cli-deploy --help
-google-agents-cli-deploy agent-engine --help
-google-agents-cli-deploy agent-runtime --help
-```
-
-If the binary is unavailable but the project uses `uv`, try:
-
-```sh
-uv run google-agents-cli-deploy --help
-```
-
-If neither works, stop and tell the user the CLI is missing. Ask whether to add
-or install the package that provides `google-agents-cli-deploy`.
+If the binary is unavailable, continue with the local project's existing
+structure when possible. Ask before adding new dependencies.
 
 ## Required Inputs
 
-Resolve these before create, update, or delete:
+Resolve these before taking action:
 
-- Google Cloud project ID
-- Region
-- Target runtime, defaulting to Agent Runtime / Agent Engine
-- Deployment name or resource ID
-- ADK app/package path, usually `pokedex_agent`
-- Entry point, usually `pokedex_agent.agent:root_agent` or the CLI's ADK default
-- Service account, only when the user or environment provides one
-- Environment variables and secrets, without printing secret values
+- Target package, app path, or resource
+- Intended task or phase
+- Expected runtime behavior
+- Required credentials, without printing secret values
 
-Use `gcloud config get-value project` and `gcloud config get-value compute/region`
-as hints only. Ask for missing values that cannot be safely inferred.
+## Execution Flow
 
-## Create Or Update
+Use this workflow when executing the task:
 
-Use the CLI's help output to choose the exact subcommand. The intended operation
-should look like one of these shapes:
+### Primary Actions
 
-```sh
-google-agents-cli-deploy agent-engine deploy \
-  --project PROJECT_ID \
-  --region REGION \
-  --app pokedex_agent \
-  --display-name DEPLOYMENT_NAME
-```
+1. Identify the exact target of the change or command.
+2. Confirm the intended command family from installed help output.
+3. Resolve the minimum required inputs before proceeding.
+4. Use the narrowest command or workflow that satisfies the request.
+5. Keep the next action explicit and easy to validate.
 
-```sh
-google-agents-cli-deploy agent-runtime deploy \
-  --project PROJECT_ID \
-  --region REGION \
-  --app pokedex_agent \
-  --display-name DEPLOYMENT_NAME
-```
+### Secondary Actions
 
-If the installed CLI uses different nouns, map the workflow to the discovered
-commands. Keep Agent Runtime / Agent Engine as the default target unless the user
-chooses another supported target.
+1. Re-run focused commands when clarification is needed.
+2. Prefer small, verifiable steps over broad speculative changes.
+3. Distinguish command issues, environment issues, and product issues.
+4. Capture the relevant identifiers, outputs, or state changes.
 
-After a successful deploy, capture the deployment ID, endpoint, project, region,
-runtime target, and console URL from command output.
+## Validation
 
-## Inspect, Logs, And Observability
+Run the relevant `--help` command and any focused verification step that matches
+the task.
 
-Prefer CLI-native list, describe, logs, and status commands. Typical intent:
+If runtime behavior changed and credentials are available, run the smallest
+relevant verification command for the current target.
 
-```sh
-google-agents-cli-deploy agent-engine list --project PROJECT_ID --region REGION
-google-agents-cli-deploy agent-engine describe DEPLOYMENT_ID --project PROJECT_ID --region REGION
-google-agents-cli-deploy agent-engine logs DEPLOYMENT_ID --project PROJECT_ID --region REGION
-```
+## Reporting
 
-If the CLI exposes observability dashboards or trace links, report those links.
-If it does not, report the available status fields and any Cloud Logging command
-suggested by the CLI.
+Report:
 
-## Delete
-
-Before deletion, identify exactly one deployment. If the user gave a fuzzy name,
-list matching deployments and ask for the exact deployment ID.
-
-Use the CLI's delete/remove command discovered from help. Typical intent:
-
-```sh
-google-agents-cli-deploy agent-engine delete DEPLOYMENT_ID \
-  --project PROJECT_ID \
-  --region REGION
-```
-
-After delete, run list or describe again. Report whether the deployment is gone,
-marked deleting, or still present.
+- Commands used
+- Files changed or resources affected
+- Checks passed, failed, or skipped
+- Any assumptions about credentials, command availability, or target identity
 
 ## Failure Handling
 
-- Authentication failure: verify with `gcloud auth list`; use the
-  `gcloud-auth-verification` skill if available.
-- Permission failure: identify the missing IAM permission or API from the error;
-  do not ask the user to re-login when the active account is already present.
-- Missing API enablement: report the service named by the CLI error and ask
-  before enabling APIs.
-- Missing dependency: ask whether to add the CLI dependency to the project or
-  install it in the current environment.
-- Ambiguous command syntax: show the relevant `--help` result summary and use
-  the command form documented by the installed CLI.
+- Missing command: ask whether to add the dependency to the project.
+- Authentication failure: verify credentials without printing secret values.
+- Permission failure: identify the missing permission or API from the error.
+- Ambiguous CLI syntax: summarize the relevant help output and use the installed form.
+
+## Safety
+
+- Do not print or commit API keys, tokens, credentials, or local `.env` values.
+- Prefer installed CLI help output over remembered syntax.

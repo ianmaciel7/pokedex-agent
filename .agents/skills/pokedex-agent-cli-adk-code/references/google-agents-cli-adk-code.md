@@ -1,82 +1,70 @@
-# google-agents-cli-adk-code Reference
+# Google Agents CLI Reference
 
-Use this reference when editing or generating ADK Python code for the Pokédex
-agent package. Treat official ADK docs and installed `adk --help` output as the
-first source of truth for command behavior.
+Use this reference when working with a Google Agents CLI command. Treat
+official documentation and installed `--help` output as the first source of
+truth for command behavior.
 
 ## Command Discovery
 
-Do not assume the exact CLI surface. Start by discovering available commands:
+Do not assume the exact CLI surface. Start by discovering the installed
+command family and the relevant subcommands from `--help`.
 
-```sh
-google-agents-cli-adk-code --help
-UV_CACHE_DIR=/tmp/uv-cache uv run google-agents-cli-adk-code --help
-UV_CACHE_DIR=/tmp/uv-cache uv run adk --help
-UV_CACHE_DIR=/tmp/uv-cache uv run adk run --help
-```
+If the binary is unavailable, continue with the local project's existing
+structure when possible. Ask before adding new dependencies.
 
-If the binary is unavailable, continue with repository conventions and ADK
-imports already present in the project. Ask before adding new dependencies.
+## Required Inputs
 
-## Code Areas
+Resolve these before taking action:
 
-- `pokedex_agent/agent.py`: root/orchestrator wiring and ADK app entry point.
-- `pokedex_agent/factory.py`: generic agent factory helpers only.
-- `pokedex_agent/sub_agents/*.py`: specialist agent constructors and instances.
-- `pokedex_agent/sub_agents/__init__.py`: collected constructors and instances.
-- `pokedex_agent/tools/`: tool wrappers grouped by domain.
-- `pokedex_agent/model_config.py`: provider and model configuration.
+- Target package, app path, or resource
+- Intended task or phase
+- Expected runtime behavior
+- Required credentials, without printing secret values
 
-## Agent Changes
+## Execution Flow
 
-For a new or changed specialist sub-agent:
+Use this workflow when executing the task:
 
-1. Inspect nearby sub-agent modules first.
-2. Define a `create_*_agent()` factory.
-3. Define a module-level `*_agent` instance.
-4. Keep instructions strict about using tools for factual Pokémon data and
-   route questions to the right specialist sub-agent.
-5. Export the constructor and instance from `sub_agents/__init__.py`.
-6. Run Ruff and the import/wiring check.
+### Primary Actions
 
-## Tool Changes
+1. Identify the exact target of the change or command.
+2. Confirm the intended command family from installed help output.
+3. Resolve the minimum required inputs before proceeding.
+4. Use the narrowest command or workflow that satisfies the request.
+5. Keep the next action explicit and easy to validate.
 
-For a new or changed tool wrapper:
+### Secondary Actions
 
-1. Place it in the matching domain module: `pokemon`, `moves`, `abilities`,
-   `items`, `world`, or `meta`.
-2. Treat PokéAPI and `pokebase` output as external data.
-3. Do not invent image URLs; return only tool-provided URLs.
-4. Prefer native ADK-friendly tool responses with JSON-serializable dicts.
-5. Prefer `output` and `error` keys in tool payloads when practical.
-6. If a schema is needed, let the tool module own its response model directly
-   instead of adding shared response-builder wrapper layers.
-7. Prefer precise JSON-compatible payload types such as `JsonValue` over broad
-   `object` annotations for tool response fields.
-8. Keep public helpers typed where practical.
-9. Add focused validation for imports and agent wiring when exports change.
+1. Re-run focused commands when clarification is needed.
+2. Prefer small, verifiable steps over broad speculative changes.
+3. Distinguish command issues, environment issues, and product issues.
+4. Capture the relevant identifiers, outputs, or state changes.
 
-## Runtime Checks
+## Validation
 
-Run these after code changes:
+Run the relevant `--help` command and any focused verification step that matches
+the task.
 
-```sh
-uv run ruff check pokedex_agent
-uv run python -c "import pokedex_agent.agent; from pokedex_agent.sub_agents import create_all_sub_agents; print(len(create_all_sub_agents()))"
-```
+If runtime behavior changed and credentials are available, run the smallest
+relevant verification command for the current target.
 
-If behavior changed and credentials are available, run:
+## Reporting
 
-```sh
-uv run adk run pokedex_agent "Tell me about Pikachu"
-```
+Report:
+
+- Commands used
+- Files changed or resources affected
+- Checks passed, failed, or skipped
+- Any assumptions about credentials, command availability, or target identity
 
 ## Failure Handling
 
-- Import failure: inspect the traceback, fix the local import or export, and
-  rerun the import/wiring check.
-- Missing dependency: ask whether to add the dependency to the project.
-- Authentication failure during ADK runtime: verify credentials without printing
-  secret values.
-- Ambiguous CLI syntax: summarize the relevant help output and use the command
-  form documented by the installed CLI.
+- Missing command: ask whether to add the dependency to the project.
+- Authentication failure: verify credentials without printing secret values.
+- Permission failure: identify the missing permission or API from the error.
+- Ambiguous CLI syntax: summarize the relevant help output and use the installed form.
+
+## Safety
+
+- Do not print or commit API keys, tokens, credentials, or local `.env` values.
+- Prefer installed CLI help output over remembered syntax.

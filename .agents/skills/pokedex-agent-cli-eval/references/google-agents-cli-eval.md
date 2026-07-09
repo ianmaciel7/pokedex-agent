@@ -1,75 +1,70 @@
-# google-agents-cli-eval Reference
+# Google Agents CLI Reference
 
-Use this reference when adding, running, or interpreting evals for the Pokédex
-ADK agent.
+Use this reference when working with a Google Agents CLI command. Treat
+official documentation and installed `--help` output as the first source of
+truth for command behavior.
 
 ## Command Discovery
 
-Do not assume the exact eval command. Start by discovering available commands:
+Do not assume the exact CLI surface. Start by discovering the installed
+command family and the relevant subcommands from `--help`.
 
-```sh
-google-agents-cli-eval --help
-uv run google-agents-cli-eval --help
-uv run adk eval --help
-```
+If the binary is unavailable, continue with the local project's existing
+structure when possible. Ask before adding new dependencies.
 
-If none are available, report that the eval CLI is missing and ask whether to
-add or install the package that provides it.
+## Required Inputs
 
-## Eval Inputs
+Resolve these before taking action:
 
-Resolve these before creating or running evals:
+- Target package, app path, or resource
+- Intended task or phase
+- Expected runtime behavior
+- Required credentials, without printing secret values
 
-- Agent or sub-agent entry point.
-- Prompt language, especially English or Brazilian Portuguese.
-- Expected routing behavior.
-- Expected tool usage.
-- Expected response traits, not brittle full-text matches unless necessary.
-- Required credentials, without printing secret values.
+## Execution Flow
 
-## Suggested Coverage
+Use this workflow when executing the task:
 
-Include small, focused cases for:
+### Primary Actions
 
-- English Pokémon lookup.
-- Brazilian Portuguese request routing.
-- Refusal to guess when data should come from tools.
-- Tool-backed move, ability, item, world, or metadata lookups.
-- Provider/model configuration behavior when relevant.
+1. Identify the exact target of the change or command.
+2. Confirm the intended command family from installed help output.
+3. Resolve the minimum required inputs before proceeding.
+4. Use the narrowest command or workflow that satisfies the request.
+5. Keep the next action explicit and easy to validate.
 
-## Running Evals
+### Secondary Actions
 
-Use the CLI's help output to choose the exact subcommand. Intended command shapes
-may look like:
+1. Re-run focused commands when clarification is needed.
+2. Prefer small, verifiable steps over broad speculative changes.
+3. Distinguish command issues, environment issues, and product issues.
+4. Capture the relevant identifiers, outputs, or state changes.
 
-```sh
-google-agents-cli-eval run --app pokedex_agent --evals EVAL_PATH
-```
+## Validation
 
-```sh
-uv run adk eval pokedex_agent EVAL_PATH
-```
+Run the relevant `--help` command and any focused verification step that matches
+the task.
 
-If the installed CLI uses different nouns, map the workflow to the discovered
-commands and report the command family used.
+If runtime behavior changed and credentials are available, run the smallest
+relevant verification command for the current target.
 
 ## Reporting
 
 Report:
 
-- Eval command used.
-- Pass, fail, and skipped counts.
-- Failing case names or prompts.
-- Whether failures are behavior regressions, fixture issues, or environment
-  issues.
-- Any follow-up checks that could not run because credentials or commands were
-  unavailable.
+- Commands used
+- Files changed or resources affected
+- Checks passed, failed, or skipped
+- Any assumptions about credentials, command availability, or target identity
 
 ## Failure Handling
 
-- Missing eval CLI: ask whether to add or install the package.
-- Authentication failure: verify active credentials without printing secrets.
-- Network/API failure: distinguish transient provider errors from agent logic
-  failures.
-- Ambiguous expected output: tighten the eval case before treating it as a
-  product bug.
+- Missing command: ask whether to add the dependency to the project.
+- Authentication failure: verify credentials without printing secret values.
+- Permission failure: identify the missing permission or API from the error.
+- Ambiguous CLI syntax: summarize the relevant help output and use the installed form.
+
+## Safety
+
+- Do not print or commit API keys, tokens, credentials, or local `.env` values.
+- Prefer installed CLI help output over remembered syntax.
