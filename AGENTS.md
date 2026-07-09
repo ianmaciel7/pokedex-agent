@@ -11,6 +11,26 @@ The agent uses PokéAPI through `pokebase` and exposes:
 - Specialist sub-agents under `pokedex_agent/sub_agents/`.
 - Tool wrappers under `pokedex_agent/tools/`.
 
+## Local Skills
+
+Use the most specific skill that matches the work. If a task touches more than
+one area, start with the narrower skill and use `pokedex-agent-cli-workflow`
+when the task spans multiple Google Agents CLI phases.
+
+- `pokedex-agent-cli-adk-code`: use for Google Agents CLI or ADK command work
+  around the local agent package, especially when inspecting, running, or
+  validating ADK code changes.
+- `pokedex-agent-cli-scaffold`: use when creating, extending, or reorganizing
+  agents, sub-agents, tool modules, local skills, or other project files.
+- `pokedex-agent-cli-workflow`: use for multi-step Google Agents CLI work that
+  needs coordination across scaffold, deploy, eval, or observability steps.
+- `pokedex-agent-cli-deploy`: use when deploying, redeploying, listing, or
+  deleting the local Pokédex agent.
+- `pokedex-agent-cli-eval`: use when designing, adding, running, or reading
+  evaluations, regression checks, quality scoring, or behavior validation.
+- `pokedex-agent-cli-observability`: use when inspecting logs, traces, metrics,
+  runtime status, or other deployed-agent debugging signals.
+
 ## Setup Commands
 
 - Install dependencies: `uv sync`
