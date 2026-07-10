@@ -39,6 +39,8 @@ Read these references based on the task:
 * `references/agent-orientation.md` for instruction-writing patterns.
 * `references/agent-definition.md` for code-based vs config-based agent setup.
 * `references/agent-config.md` for agent generation settings.
+* `references/agent-session.md` for session state, `output_key`, `{var}`
+  templating, and state namespaces.
 * `references/agent-planning.md` for planning, `BuiltInPlanner`, and
   `PlanReActPlanner`.
 * `references/agent-structured-data.md` for `input_schema`, `output_schema`,
