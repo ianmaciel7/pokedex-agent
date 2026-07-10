@@ -51,6 +51,12 @@ Read only what matches the task:
   `PlanReActPlanner`.
 * `references/agent-structured-data.md` for `input_schema`, `output_schema`,
   and `output_key`.
+* `references/agent-team.md` for root agents, orchestrators, and sub-agents.
+* `references/workflows-collaboration.md` for collaborative workflows and
+  multi-agent coordination patterns.
+* `../agents-cli-teacher/references/adk-learning-map.md` when the question is
+  about current ADK learning links, doc sequencing, or deciding whether a
+  reference should be updated or created.
 
 Primary docs for planning:
 

@@ -1,0 +1,7 @@
+interface:
+  display_name: "Agents CLI Teacher"
+  short_description: "Teach agents-cli workflow basics"
+  default_prompt: "Use $agents-cli-teacher to explain agents-cli phases, commands, and repo conventions."
+
+policy:
+  allow_implicit_invocation: true
