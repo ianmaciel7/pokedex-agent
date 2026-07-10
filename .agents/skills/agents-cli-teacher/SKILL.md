@@ -41,35 +41,12 @@ Read only what matches the task:
 * `../google-agents-cli-observability/SKILL.md` for logs and traces.
 * `../adk-teacher/SKILL.md` when the question is about ADK structure rather
   than the CLI.
-* `references/courses.md` for the Agents to Build Agents learning path.
-* `references/antigravity-and-agents-cli.md` for the local ADK 2.0 workflow
-  lesson about Antigravity, agents-cli, SDD, and review loops.
-* `references/adk-learning-map.md` for a reusable map of current ADK learning
-  links, doc categories, and update-vs-create decisions.
-* `references/setup-and-skill-set.md` for installation, verification, auth,
-  skill loading, and session-start patterns.
-* `references/local-development-loop.md` for the scaffold-install-test-eval
-  loop and project structure.
-* `references/managed-agents-module-introduction.md` for the infrastructure-
-  first vs code-first module overview.
-* `references/managed-agents-sandbox.md` for the secure sandbox, isolation,
-  and resource-scoping model.
-* `references/managed-agents-interaction-model.md` for control plane vs data
-  plane and runtime execution.
-* `references/managed-agents-agent-definition.md` for defining durable agents
-  on the control plane.
-* `references/managed-agents-configuration-environment-data.md` for agent
-  configuration, environments, mounts, and cloud storage data.
-* `references/managed-agents-tools-and-skills.md` for extending agents with
-  tools, MCP, and mounted skills.
-* `references/managed-agents-run-and-operate.md` for data-plane runs, typed
-  results, state, and production operation.
-* `references/managed-agents-execute-and-results.md` for background runs,
-  streaming, typed outputs, and usage capture.
-* `references/managed-agents-state-and-blueprints.md` for multi-turn state and
-  reusable blueprint composition.
-* `references/managed-agents-security-and-hardening.md` for production
-  security, IAM, containment, and operational hardening.
+* `references/courses.md` for courses and learning paths.
+* `references/setup.md` for installation and local setup.
+* `references/workflow.md` for vibecoding and spec-driven development.
+* `references/local-development-loop.md` for the standard local development
+  loop.
+* `references/managed-agents.md` for the managed runtime lessons.
 
 ## Teaching style
 

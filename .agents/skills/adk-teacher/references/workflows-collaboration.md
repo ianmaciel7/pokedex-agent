@@ -52,5 +52,5 @@ Skip it when:
 
 ## Source note
 
-This reference is based on the ADK workflows and collaboration guidance in the
-official documentation.
+Official URLs:
+- https://adk.dev/workflows/collaboration/
