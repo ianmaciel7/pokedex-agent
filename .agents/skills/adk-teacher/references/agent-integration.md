@@ -1,90 +1,45 @@
 # MCP Integration
 
-Use this reference when an ADK agent should connect to external tools through
-the Model Context Protocol (MCP).
+Use this reference when an ADK agent needs external tools through the Model
+Context Protocol (MCP).
 
-## Introduction
+## What It Is
 
-The Model Context Protocol (MCP) is an open standard for connecting agents to
-external tools and data sources through a universal interface.
+MCP is a standard way to connect agents to external tools and data sources.
 
-Think of it like USB for AI tools:
+Think of it as a shared connector layer:
 
-* one standard connection
+* one protocol
 * many compatible servers
 * many compatible clients
 
-That is the core value of MCP. Instead of writing a custom integration for
-every service, you connect to an MCP server and let the protocol handle the
-shape of the interaction.
+## Why It Matters
 
-Official references:
-
-* ADK MCP docs: https://google.github.io/adk-docs/mcp/
-* ADK MCP tools docs: https://google.github.io/adk-docs/tools/mcp-tools/
-* MCP specification: https://modelcontextprotocol.io/
-
-## Why MCP Matters
-
-Before MCP, each integration usually required custom glue code.
-
-That meant:
-
-* separate code for each service
-* framework-specific implementations
-* more maintenance when APIs changed
-* less portability across agent stacks
+Without MCP, each integration needs custom glue code.
 
 With MCP:
 
-* a single standard works across many tools
-* tool providers can maintain their own servers
-* agents can reuse existing capabilities faster
-* the integration surface stays consistent
+* the tool owner can maintain the server
+* the agent can reuse the server through one interface
+* the integration stays more portable
 
-In short:
+## Main Pattern
 
-* the tool owner maintains the server
-* the agent connects through MCP
+This reference focuses on the common pattern where the ADK agent acts as an
+MCP client.
 
-## Two Integration Patterns
+Flow:
 
-ADK supports two MCP patterns:
+1. The MCP server exposes tools.
+2. ADK connects with `McpToolset`.
+3. The tools are discovered automatically.
+4. The agent calls them like normal ADK tools.
 
-1. Use an existing MCP server from your ADK agent.
-2. Expose ADK tools through an MCP server.
+## `McpToolset`
 
-This reference focuses on Pattern 1, where the ADK agent acts as an MCP
-client and consumes tools from an external server.
+`McpToolset` is the bridge between ADK and MCP.
 
-## How MCP Works In ADK
-
-```mermaid
-graph LR
-  A[ADK agent] --> B[McpToolset]
-  B --> C[MCP server]
-  C --> D[Tools: list_directory, read_file, etc.]
-```
-
-The flow is:
-
-1. The MCP server exposes tools through the MCP protocol.
-2. ADK connects to the server with `McpToolset`.
-3. The available tools are discovered automatically.
-4. The agent can call those tools like any other ADK tool.
-
-## The `McpToolset`
-
-`McpToolset` is the ADK bridge to MCP servers.
-
-It can be added directly to an agent's `tools` list.
-
-What it does:
-
-* connects to an MCP server
-* discovers tools automatically
-* proxies calls from the agent to the server
-* returns the server result back to the agent
+Use it inside the agent's `tools` list.
 
 Example:
 
@@ -111,52 +66,23 @@ agent = LlmAgent(
 )
 ```
 
-Key point:
-
-* `McpToolset` goes in `tools`
-* the connection parameters tell ADK how to reach the server
-* the server tools become available automatically
-
 ## Connection Types
-
-ADK supports two main ways to connect to an MCP server.
 
 ### `StdioConnectionParams`
 
-Use this for a local MCP server process.
+Use this for a local server process.
 
-```python
-from google.adk.tools.mcp_tool.mcp_session_manager import StdioConnectionParams
-from mcp import StdioServerParameters
-
-connection = StdioConnectionParams(
-    server_params=StdioServerParameters(
-        command="npx",
-        args=["-y", "@modelcontextprotocol/server-filesystem", "/path"],
-    ),
-)
-```
-
-Use cases:
+Good for:
 
 * development
 * testing
-* single-user local setups
+* local setups
 
 ### `SseConnectionParams`
 
-Use this for a remote MCP server over HTTP.
+Use this for a remote server over HTTP.
 
-```python
-from google.adk.tools.mcp_tool.mcp_session_manager import SseConnectionParams
-
-connection = SseConnectionParams(
-    url="https://your-mcp-server.example.com/sse",
-    headers={"Authorization": "Bearer YOUR_TOKEN"},
-)
-```
-
-Use cases:
+Good for:
 
 * production
 * hosted servers
@@ -164,15 +90,13 @@ Use cases:
 
 ## Tool Filtering
 
-MCP servers can expose many tools, but you may only want a few of them.
+Use `tool_filter` to expose only the tools the agent actually needs.
 
-Use `tool_filter` to restrict what the agent can access.
+This helps with:
 
-Why filtering matters:
-
-* security: expose only safe tools
-* simplicity: give the agent only what it needs
-* focus: reduce tool noise
+* security
+* simplicity
+* lower tool noise
 
 Example:
 
@@ -183,57 +107,27 @@ McpToolset(
 )
 ```
 
-For filesystem-style servers, filtering read-only tools is a good default in
-production.
+## Which Tool Style To Use
 
-## How To Choose The Right Tool Approach
+* Use built-in ADK tools for common features like search or code execution.
+* Use MCP when a server already exists for the capability.
+* Use custom function tools for business-specific logic.
 
-Use this decision rule:
+## Common MCP Server Areas
 
-* If the task is Google Search or code execution, use built-in ADK tools.
-* If an MCP server already exists for the capability, use MCP tools.
-* If the capability is your own business logic or proprietary system, write a
-  custom function tool.
-
-Comparison:
-
-| Aspect | MCP tools | Built-in tools | Custom function tools |
-| --- | --- | --- | --- |
-| Maintained by | Community or vendor | ADK | You |
-| Setup | Connect and configure | Import | Write code |
-| Portability | Works across frameworks | ADK only | ADK only |
-| Customization | Limited to server options | Limited | Full control |
-| Time to start | Minutes | Minutes | Hours to days |
-
-Use MCP when:
-
-* the capability is common
-* someone already built the integration
-* you want portability across AI frameworks
-* you prefer maintained tools over hand-built ones
-
-Use custom function tools when:
-
-* the logic is unique to your business
-* the system is internal or proprietary
-* you need full control over error handling and behavior
-* there is no MCP server for the use case
-
-## Examples Of Common MCP Servers
-
-Common MCP server categories include:
+Common server categories include:
 
 * filesystem access
-* GitHub management
-* Slack messaging
-* PostgreSQL or MySQL access
-* Notion documents and databases
-* Google Drive file access
-
-Before writing a custom integration, check the MCP ecosystem first. The
-feature you need may already exist as a server.
+* GitHub
+* Slack
+* databases
+* Notion
+* Google Drive
 
 ## Source Note
 
-This reference is based on ADK's MCP documentation and the MCP ecosystem
-design.
+This reference is based on ADK MCP docs and the MCP specification:
+
+* https://google.github.io/adk-docs/mcp/
+* https://google.github.io/adk-docs/tools/mcp-tools/
+* https://modelcontextprotocol.io/

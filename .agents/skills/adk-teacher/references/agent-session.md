@@ -1,40 +1,30 @@
 # Agent Session
 
 Use this reference when explaining session state, `output_key`, `{var}`
-templating, and state namespaces in ADK.
+templating, and namespaces.
 
-## What It Covers
+## What It Is
 
-Session data has three related parts:
+Session data has three main parts:
 
-* `session.state`: stored values your code can read and write.
-* `output_key`: automatic storage of the agent's final text response.
-* `{var}` templating: instruction text resolved from session state before the
-  LLM sees it.
-
-It also covers state namespaces:
-
-* `temp:` for one turn.
-* no prefix for one session.
-* `user:` for one user across sessions.
-* `app:` for the whole app.
+* `session.state` for values your code can read and write
+* `output_key` for saving the final response
+* `{var}` templating for inserting state into instructions
 
 ## Core Idea
 
-Conversation history helps the LLM remember what was said.
-Session state helps your code store and check exact values.
+Conversation history helps the model remember the chat.
+Session state helps your code store exact values.
 
-Use session state when you need programmatic control, not just model context.
+Use session state when you need programmatic control.
 
 ## `session.state`
 
-`session.state` is a dictionary-like store.
-
-Use it for data such as:
+Use `session.state` for things like:
 
 * user names
-* task progress
 * preferences
+* progress
 * routing flags
 
 Example:
@@ -44,15 +34,9 @@ session.state["user_name"] = "Alex"
 session.state["conversation_topic"] = "refunds"
 ```
 
-Read values safely with `.get()`:
-
-```python
-name = session.state.get("user_name", "Guest")
-```
-
 ## `output_key`
 
-Use `output_key` when you want the final agent response saved automatically.
+Use `output_key` when you want the final response saved automatically.
 
 Example:
 
@@ -61,83 +45,49 @@ from google.adk.agents import LlmAgent
 
 agent = LlmAgent(
     model="gemini-2.5-flash",
-    instruction="Extraia o tópico principal. Retorne SOMENTE o tópico.",
+    instruction="Return only the main topic.",
     output_key="topic",
 )
 ```
 
-If the agent responds with `quantum computing`, ADK stores:
-
-```python
-session.state["topic"] = "quantum computing"
-```
+If the agent returns `quantum computing`, ADK stores that value in
+`session.state["topic"]`.
 
 ## `{var}` Templating
 
-Use `{var}` placeholders in instructions to inject state values.
+Use `{var}` to inject state into instructions.
 
 Example:
 
 ```python
-instruction="Olá, {user_name}, como posso te ajudar hoje?"
+instruction="Hello, {user_name}, how can I help?"
 ```
 
-If `session.state["user_name"] = "Alex"`, the LLM receives:
-
-```text
-Olá, Alex, como posso te ajudar hoje?
-```
-
-Use `{key?}` when the value may be missing:
-
-```python
-instruction="Olá, {user_name?Guest}"
-```
+Use `{key?fallback}` when a value may be missing.
 
 ## State Namespaces
 
-Namespaces control how long values persist.
+Namespaces define how long values last:
 
 | Namespace | Prefix | Scope |
 | --- | --- | --- |
-| Temporary | `temp:` | Current turn only |
-| Session | none | Current session |
+| Temporary | `temp:` | One turn |
+| Session | none | One session |
 | User | `user:` | One user across sessions |
-| App | `app:` | Whole application |
-
-Examples:
-
-```python
-session.state["temp:current_step"] = "validating"
-session.state["conversation_topic"] = "refunds"
-session.state["user:theme"] = "dark"
-session.state["app:api_url"] = "https://api.example.com"
-```
+| App | `app:` | Whole app |
 
 ## Quick Rule
 
-Choose the smallest scope that still fits the data:
+Use the smallest scope that still fits the data:
 
-* use `temp:` for one turn
-* use no prefix for one session
-* use `user:` for one user across sessions
-* use `app:` for shared app-wide values
-
-## Mental Model
-
-Ask:
-
-* Does this value belong to the current turn?
-* Does it belong to the current conversation?
-* Does it belong to one user across conversations?
-* Does it belong to the whole app?
+* `temp:` for one turn
+* no prefix for one session
+* `user:` for one user across sessions
+* `app:` for shared app values
 
 ## Source Note
 
-This reference is based on ADK documentation for session state, templating,
-and namespaces.
-
-Useful docs:
+This reference is based on ADK docs for session state and namespaces:
 
 * https://google.github.io/adk-docs/sessions/state.md#accessing-session-state-in-agent-instructions
 * https://google.github.io/adk-docs/sessions/state.md#organizing-state-with-prefixes-scope-matters

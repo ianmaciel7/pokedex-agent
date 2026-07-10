@@ -1,20 +1,16 @@
 ---
 name: adk-teacher
 description: >
-  Use this skill when you want a teacher-like explanation of the ADK agent
-  project in this repo. Trigger it for questions about the root agent,
-  sub-agents, prompt text, agent configuration, structured output, tool usage,
-  or ADK code changes for the `pokedex_agent` package. It is useful when the
-  user wants an overview, a conceptual walkthrough, or a step-by-step
-  explanation of how the agent works.
+  Use this skill for clear explanations of the ADK agent project in this repo.
+  It fits questions about the root agent, sub-agents, prompts, config,
+  structured output, tools, and ADK code changes in `pokedex_agent`.
 ---
 
 # ADK Teacher
 
-Use this skill when you need to explain the local ADK agent project in a clear,
-classroom-style way.
+Use this skill to explain the local ADK agent project in a simple, direct way.
 
-Think of the explanation in this order:
+Use this order:
 
 1. What the part is.
 2. Why it exists.
@@ -23,18 +19,18 @@ Think of the explanation in this order:
 
 ## When to use it
 
-Use this skill when the task involves any of the following:
+Use this skill when the task involves:
 
-* Updating `pokedex_agent/agent.py` or `pokedex_agent/factory.py`.
-* Changing root-agent or sub-agent prompts.
-* Adding or revising specialist agent behavior.
-* Working on agent config, structured I/O, or instruction text.
-* Explaining how the Pokédex agent routes requests or uses tools.
-* Walking someone through the project from zero, as if teaching the system.
+* `pokedex_agent/agent.py` or `pokedex_agent/factory.py`.
+* Root-agent or sub-agent prompts.
+* Specialist agent behavior.
+* Agent config, structured I/O, or instruction text.
+* How the Pokédex agent routes requests or uses tools.
+* A zero-to-one walkthrough of the project.
 
 ## What to read first
 
-Read these references based on the task:
+Read only what matches the task:
 
 * `references/agent-orientation.md` for instruction-writing patterns.
 * `references/agent-definition.md` for code-based vs config-based agent setup.
@@ -56,20 +52,24 @@ Read these references based on the task:
 * `references/agent-structured-data.md` for `input_schema`, `output_schema`,
   and `output_key`.
 
-Primary docs for planning and thinking:
+Primary docs for planning:
 
 * https://adk.dev/agents/llm-agents/#planning-planner
 * https://ai.google.dev/gemini-api/docs/thinking
 
+Related course:
+
+* https://www.skills.google/paths/3545
+
 ## Teaching style
 
-Explain things like a professor would in a good intro class:
+Explain things like a good intro class:
 
 * Start with the big picture before naming the files.
-* Define unfamiliar terms before using them again.
-* Use short examples to make the idea concrete.
-* Connect each concept back to the agent's behavior.
-* Prefer "why this matters" over bare technical listing.
+* Define new terms before reusing them.
+* Use short examples.
+* Connect each concept to agent behavior.
+* Focus on why it matters.
 
 ## Working approach
 
@@ -83,10 +83,10 @@ Explain things like a professor would in a good intro class:
 
 ## Guidance
 
-* Keep the explanation calm, friendly, and easy to follow.
-* Treat routing text as part of the agent design, not as filler.
+* Keep the explanation calm and easy to follow.
+* Treat routing text as part of the design, not filler.
 * Use `Pokémon` in user-facing prose when describing the domain.
-* If the user seems lost, slow down and explain the architecture first.
+* If the user seems lost, explain the architecture first.
 * If the user asks for code, explain the code and the idea behind it.
 * If the task needs deeper ADK code detail, follow the linked ADK reference
   files under `../google-agents-cli-adk-code/references/`.
