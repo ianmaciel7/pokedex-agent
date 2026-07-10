@@ -161,7 +161,7 @@ Primary docs for planning:
 
 Related course:
 
-* https://www.skills.google/paths/3545
+* `references/courses.md`
 
 ## Teaching style
 
