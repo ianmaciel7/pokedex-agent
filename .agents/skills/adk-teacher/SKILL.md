@@ -39,8 +39,16 @@ Read these references based on the task:
 * `references/agent-orientation.md` for instruction-writing patterns.
 * `references/agent-definition.md` for code-based vs config-based agent setup.
 * `references/agent-config.md` for agent generation settings.
+* `references/agent-integration.md` for MCP-based integration with external
+  tool servers.
 * `references/agent-tools.md` for the jump from basic agents to
   tool-using agents.
+* `references/agent-custom-tools.md` for writing custom Python tools for
+  business-specific logic.
+* `references/agent-orchestration.md` for using instructions and planning to
+  coordinate multiple tools effectively.
+* `references/agent-strategic-instructions.md` for using tool references in
+  agent instructions and handling tool return values well.
 * `references/agent-session.md` for session state, `output_key`, `{var}`
   templating, and state namespaces.
 * `references/agent-planning.md` for planning, `BuiltInPlanner`, and

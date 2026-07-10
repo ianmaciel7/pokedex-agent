@@ -163,7 +163,9 @@ Do not omit the rendered content when the tool returns it.
 
 ## 2. Code Execution
 
-Code execution lets the agent run Python code safely.
+Code execution is a specialized kind of tool in ADK.
+
+It lets the agent run Python code safely.
 
 What it offers:
 
@@ -190,7 +192,7 @@ code_agent = LlmAgent(
 Notice the difference:
 
 * code execution uses `code_executor`
-* it does not use the `tools` list
+* it is a specialized tool type, not a regular entry in the `tools` list
 
 ### What the agent can do with code execution
 
@@ -270,6 +272,9 @@ Use custom function tools when you:
 * implement unique algorithms
 * need tasks that are simple and exclusive to your app
 * want full control over the implementation
+
+If the logic belongs to your business, move to custom tools:
+see `references/agent-custom-tools.md`.
 
 Example decision:
 
